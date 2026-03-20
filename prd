@@ -1,0 +1,306 @@
+# Product Requirements Document (PRD)
+
+## Public Website (Frontend) — Assam Association Delhi
+
+---
+
+# 1. Overview
+
+## 1.1 Purpose
+
+The frontend website represents the digital identity of Assam Association Delhi. It must reflect Assamese heritage, provide essential information, and enable users to interact with services like booking and content browsing.
+
+## 1.2 Goals
+
+* Establish strong cultural identity
+* Provide clean, simple, and accessible UI
+* Ensure mobile-first experience
+* Deliver fast, SEO-optimized pages
+
+---
+
+# 2. Target Users
+
+* General public
+* Members of association
+* Event visitors
+* Booking users
+
+---
+
+# 3. Design System
+
+## 3.1 Theme
+
+* "Brahmaputra Serenity"
+
+## 3.2 Colors
+
+* Background: #F9F6F0
+* Primary Accent: Deep Blue
+* Secondary Accent: Soft Red (limited use)
+* Text: Charcoal (#333333)
+
+## 3.3 Typography
+
+* Headings: Serif (elegant, cultural)
+* Body: Sans-serif (readable)
+
+## 3.4 UI Principles
+
+* Minimal
+* Elegant
+* Cultural storytelling
+* High whitespace
+* No clutter
+
+---
+
+# 4. Global Layout
+
+## 4.1 Navbar
+
+* Sticky header
+* Logo (left)
+* Menu:
+
+  * Home
+  * About (dropdown)
+  * Services (dropdown)
+  * Booking
+  * Gallery
+  * Contact
+
+### Mobile
+
+* Hamburger menu
+* Full-screen drawer navigation
+
+---
+
+## 4.2 Footer
+
+* About section
+* Quick links
+* Contact info
+* Social links
+
+---
+
+# 5. Pages & Features
+
+## 5.1 Home Page
+
+### Sections
+
+* Hero (cultural visual + tagline)
+* About preview
+* Heritage highlight
+* Latest notices
+* Publications preview
+* Gallery preview
+
+### Rules
+
+* No services section
+
+---
+
+## 5.2 About Page
+
+* About organization
+* Vision & mission
+* Committee members
+* Address & contact
+* Bank details
+
+---
+
+## 5.3 Services Page
+
+* List of facilities
+* Card-based layout
+* Dynamic detail pages (/services/[slug])
+
+---
+
+## 5.4 Booking Page
+
+### Features
+
+* Booking form
+* Fields:
+
+  * Name
+  * Phone
+  * Facility
+  * Date picker
+
+### Logic
+
+* Disable blocked dates
+* Submit request
+* Show success/error toast
+
+---
+
+## 5.5 Notices Page
+
+### Features
+
+* List of notices
+* Filter (year optional)
+* Pinned notice highlight
+
+---
+
+## 5.6 Documents Page
+
+### Features
+
+* Category + year filter
+* Downloadable files
+
+---
+
+## 5.7 Publications Page
+
+* List of publications
+* PDF or preview links
+
+---
+
+## 5.8 Gallery Page
+
+### Features
+
+* Album-based layout
+* Photo grid
+* Video embeds (YouTube)
+
+---
+
+## 5.9 Contact Page
+
+### Features
+
+* Address
+* Map embed
+* Contact form
+
+---
+
+# 6. API Integration
+
+## Booking
+
+* POST /api/bookings
+
+## Notices
+
+* GET /api/notices
+
+## Documents
+
+* GET /api/documents
+
+## Gallery
+
+* GET /api/gallery
+
+## Services
+
+* GET /api/services
+
+## Contact
+
+* POST /api/contact
+
+---
+
+# 7. State Management
+
+* Use React hooks
+* Server components for data fetching
+* Client components for forms
+
+---
+
+# 8. Performance
+
+* Next.js Image optimization
+* Lazy loading
+* Code splitting
+
+---
+
+# 9. SEO Requirements
+
+* Meta tags for each page
+* Open Graph tags
+* Sitemap.xml
+* Clean URLs
+
+---
+
+# 10. Error Handling & Feedback
+
+## Toast Notifications
+
+* Success (green)
+* Error (red)
+
+## Form Errors
+
+* Inline validation messages
+
+---
+
+# 11. Accessibility
+
+* Proper contrast ratios
+* Semantic HTML
+* Keyboard navigation
+
+---
+
+# 12. Security
+
+* Input validation
+* Sanitization
+* HTTPS
+
+---
+
+# 13. Responsive Design
+
+* Mobile-first approach
+* Breakpoints for tablet and desktop
+
+---
+
+# 14. Deployment
+
+* Hosted on Vercel
+* Environment variables configured
+
+---
+
+# 15. Future Enhancements
+
+* Payment integration
+* Member login system
+* Event registration
+
+---
+
+# 16. Deliverables
+
+* Fully responsive frontend
+* API integrated UI
+* Optimized performance
+* SEO-ready pages
+
+---
+
+# END OF PRD
