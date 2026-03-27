@@ -7,8 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { submitContactForm } from "@/lib/api/contact";
 import contactHero from "../../../public/images/footer.jpeg";
+import paymentBarcode from "../../../public/images/paymentBarcode.jpg";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -174,6 +176,24 @@ export default function ContactPage() {
                   <div className="flex justify-between">
                     <span>IFSC</span>
                     <span className="text-primary">SBIN0001234</span>
+                  </div>
+                </div>
+
+                {/* QR Code / Barcode section */}
+                <div className="mt-8 p-4 bg-white rounded-lg border border-primary/10 shadow-sm inline-block">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-3 text-center">
+                    Scan to Pay
+                  </p>
+                  <div className="mx-auto flex justify-center">
+                    <Image
+                      src={paymentBarcode}
+                      alt="Payment Barcode"
+                      width={160}
+                      height={160}
+                      className="object-contain"
+                      style={{ height: 'auto' }}
+                      priority
+                    />
                   </div>
                 </div>
               </div>

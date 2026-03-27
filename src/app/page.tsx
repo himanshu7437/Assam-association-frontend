@@ -42,9 +42,11 @@ export default function Home() {
               <Image
                 src={logo}
                 alt="AAD Logo"
-                width={150}
-                height={150}
-                className="mb-5 w-[170px] text-white"
+                width={170}
+                height={170}
+                className="mb-5 text-white"
+                style={{ height: 'auto' }}
+                priority
               />
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#4b0004] mb-5 font-serif leading-tight">
@@ -69,17 +71,17 @@ export default function Home() {
 
             {/* PILLAR 1 */}
             <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar1} alt="pillar1" fill className="object-cover" />
+              <Image src={pillar1} alt="pillar1" fill className="object-cover" sizes="(max-width: 768px) 33vw, 25vw" />
             </div>
 
             {/* PILLAR 2 */}
             <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar2} alt="pillar2" fill className="object-cover" />
+              <Image src={pillar2} alt="pillar2" fill className="object-cover" sizes="(max-width: 768px) 33vw, 25vw" />
             </div>
 
             {/* PILLAR 3 */}
             <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar3} alt="pillar3" fill className="object-cover" />
+              <Image src={pillar3} alt="pillar3" fill className="object-cover" sizes="(max-width: 768px) 33vw, 25vw" />
             </div>
 
           </div>
@@ -134,6 +136,7 @@ export default function Home() {
                 alt="Heritage Center"
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/20"></div>
             </div>
