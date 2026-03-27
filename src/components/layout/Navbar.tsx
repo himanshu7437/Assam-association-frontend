@@ -99,7 +99,7 @@ export default function Navbar() {
           ))}
 
           <Link
-            href="/join"
+            href="/membership"
             className="block bg-[#4b0004] text-white text-center py-2 rounded-sm"
             onClick={() => setIsOpen(false)}
           >

@@ -1,21 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-
-const members = [
-  { name: "Dr. Hemanta Kalita", role: "President", image: "/images/placeholder-user.jpg" },
-  { name: "Smti. Rita Baruah", role: "General Secretary", image: "/images/placeholder-user.jpg" },
-  { name: "Shri. Pranab Gogoi", role: "Treasurer", image: "/images/placeholder-user.jpg" },
-  { name: "Dr. Meera Saikia", role: "Cultural Secretary", image: "/images/placeholder-user.jpg" }
-];
+import { getCommitteeMembers } from "@/lib/api/committee";
+import { Member } from "@/types";
+import { Loader2 } from "lucide-react";
 
 export default function Committee() {
-  return (
-    <section id="committee">
-      <div className="max-w-7xl mx-auto">
+  const [members, setMembers] = useState<Member[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    async function loadMembers() {
+      try {
+        const data = await getCommitteeMembers();
+        setMembers(data);
+      } catch (error) {
+        console.error("Failed to fetch committee members", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadMembers();
+  }, []);
+
+  return (
+    <section id="committee" className="py-20">
+      <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
           <div className="max-w-xl">
@@ -36,42 +48,58 @@ export default function Committee() {
           </p>
         </div>
 
-        {/* Members Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {members.map((member, idx) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="group bg-white p-6 sm:p-8 rounded-lg text-center border border-[#e4e2dd] hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              {/* Profile Image */}
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-6">
-                <Image
-                  src={member.image}
-                  alt={member.name}
-                  fill
-                  className="object-cover rounded-full border-4 border-[#eae8e3] group-hover:border-[#4b0004]/20 transition-colors"
-                />
-              </div>
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="flex justify-center items-center h-48">
+            <Loader2 className="animate-spin text-[#4b0004]" size={40} />
+          </div>
+        ) : members.length === 0 ? (
+          <div className="text-center text-gray-500 py-10">
+            No committee members announced yet.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {members.map((member, idx) => (
+              <motion.div
+                key={member.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="group bg-white p-6 sm:p-8 rounded-3xl text-center border border-[#e4e2dd] hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                {/* Profile Image */}
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-6">
+                  <Image
+                    src={member.image || "/images/placeholder-user.jpg"}
+                    alt={member.name}
+                    fill
+                    className="object-cover rounded-2xl border-4 border-[#eae8e3] group-hover:border-[#4b0004]/20 transition-colors"
+                  />
+                </div>
 
-              {/* Info */}
-              <h3 className="text-lg sm:text-xl font-bold text-[#1b1c19] mb-1 font-[Noto_Serif]">
-                {member.name}
-              </h3>
+                {/* Info */}
+                <h3 className="text-lg sm:text-xl font-bold text-[#1b1c19] mb-1 font-[Noto_Serif]">
+                  {member.name}
+                </h3>
 
-              <p className="text-[#4b0004] text-sm font-medium mb-3">
-                {member.role}
-              </p>
+                <p className="text-[#4b0004] text-sm font-medium mb-1">
+                  {member.role}
+                </p>
 
-              <p className="text-[#44474e] text-xs sm:text-sm leading-relaxed">
-                Dedicated to strengthening the community and preserving cultural values.
-              </p>
-            </motion.div>
-          ))}
-        </div>
+                {member.email && (
+                  <p className="text-[#465f88] text-xs mb-3 truncate px-2">
+                    {member.email}
+                  </p>
+                )}
+
+                <p className="text-[#44474e] text-xs sm:text-sm leading-relaxed">
+                  Dedicated to strengthening the community and preserving cultural values.
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

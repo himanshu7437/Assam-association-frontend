@@ -1,3 +1,4 @@
+import Link from "next/link";
 import heroImage from "../../public/images/hero-home.jpeg";
 import sectionImg from "../../public/images/section-home.jpeg";
 
@@ -45,9 +46,12 @@ export default function Home() {
               <p className="text-2xl md:text-3xl text-[#465f88] mb-10 font-serif">
                 Preserving Heritage, Fostering Community in Delhi
               </p>
-              <button className="bg-[#B5824C] text-white px-10 py-4 rounded text-lg font-semibold hover:scale-105 transition">
+              <Link 
+                href="/about"
+                className="bg-[#B5824C] text-white px-10 py-4 rounded text-lg font-semibold hover:scale-105 transition inline-block"
+              >
                 Explore Our Legacy
-              </button>
+              </Link>
             </div>
           </div>
 
