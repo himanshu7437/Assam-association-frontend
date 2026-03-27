@@ -25,10 +25,7 @@ export default function OrgSection() {
 
           {/* Quote */}
           <p className="text-[#44474e] text-base sm:text-lg md:text-xl leading-relaxed italic max-w-2xl mx-auto">
-            “Since our founding, the Assam Association Delhi has remained steadfast in its
-            commitment to the welfare of our people. Through decades of change, our dedication
-            to service and the promotion of Assamese identity in the heart of the national capital
-            remains unchanged.”
+            “Asom Sangha was constituted at the very dawn of Independence in 1947 under the president-ship of Late Mahendra Mohan Chaudhury and with Late Deven Pal Das as General Secretary . This Assam Sangha got registered as Assam Association, Delhi with registration number 3414 on the 17th August in the year 1967 under the Societies Registration Act. In the year 1966 the association had given to itself a constitution in the form of a Memorandum of Association to rearrange their dreams into themes.”
           </p>
 
           {/* Footer Line */}

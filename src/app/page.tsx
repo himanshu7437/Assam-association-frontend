@@ -1,8 +1,12 @@
 import Link from "next/link";
-import heroImage from "../../public/images/hero-home.jpeg";
+import Image from "next/image";
 import sectionImg from "../../public/images/section-home.jpeg";
+import logo from "../../public/images/AAD_LOGO red.svg";
+import pillar1 from "../../public/images/pillar-1.jpeg";
+import pillar2 from "../../public/images/pillar-2.jpeg";
+import pillar3 from "../../public/images/pillar-3.jpeg";
 
-export default function Home() {    
+export default function Home() {
   const notices = [
     {
       date: "24 Oct",
@@ -24,45 +28,60 @@ export default function Home() {
   return (
     <div className="flex flex-col bg-[#F9F7F2] text-[#1b1c19] relative">
 
-      {/* ✅ BACKGROUND PATTERN (ADDED) */}
-      <div
-        className="absolute inset-0 opacity-[0.035] pointer-events-none z-0"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='%234b0004'/%3E%3C/svg%3E\")",
-        }}
-      />
-
       {/* Wrap content above pattern */}
       <div className="relative z-10">
 
         {/* HERO */}
-        <section className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-80px)]">
-          <div className="flex items-center justify-center p-8 md:p-16 lg:p-24">
-            <div className="max-w-xl">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#4b0004] mb-6 font-serif">
+        <section className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-80px)] items-center">
+
+          {/* LEFT SIDE */}
+          <div className="flex items-center justify-center p-6 md:p-12 lg:p-16">
+            <div className="max-w-lg">
+
+              {/* LOGO */}
+              <Image
+                src={logo}
+                alt="AAD Logo"
+                width={150}
+                height={150}
+                className="mb-5 w-[170px] text-white"
+              />
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#4b0004] mb-5 font-serif leading-tight">
                 Assam Association Delhi
               </h1>
-              <p className="text-2xl md:text-3xl text-[#465f88] mb-10 font-serif">
+
+              <p className="text-xl md:text-2xl text-[#465f88] mb-8 font-serif">
                 Preserving Heritage, Fostering Community in Delhi
               </p>
-              <Link 
+
+              <Link
                 href="/about"
-                className="bg-[#B5824C] text-white px-10 py-4 rounded text-lg font-semibold hover:scale-105 transition inline-block"
+                className="bg-[#B5824C] text-white px-8 py-3 rounded text-base font-semibold hover:scale-105 transition inline-block"
               >
                 Explore Our Legacy
               </Link>
             </div>
           </div>
 
-          <div className="p-4 h-[600px] w-[700px] rounded-3xl md:p-8">
-            <div className="relative w-full h-full rounded-3xl shadow-2xl overflow-hidden">
-              <img
-                src={heroImage.src}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/20"></div>
+          {/* RIGHT SIDE → FIXED PILLARS */}
+          <div className="flex justify-center items-center gap-4 px-6 md:px-10 h-[580px]">
+
+            {/* PILLAR 1 */}
+            <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
+              <Image src={pillar1} alt="pillar1" fill className="object-cover" />
             </div>
+
+            {/* PILLAR 2 */}
+            <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
+              <Image src={pillar2} alt="pillar2" fill className="object-cover" />
+            </div>
+
+            {/* PILLAR 3 */}
+            <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
+              <Image src={pillar3} alt="pillar3" fill className="object-cover" />
+            </div>
+
           </div>
         </section>
 
@@ -109,10 +128,12 @@ export default function Home() {
         {/* HERITAGE FEATURE */}
         <section className="py-24 bg-[#f0eee9]">
           <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
-            <div className="relative w-[600px] h-[500px] rounded-3xl shadow-2xl overflow-hidden">
-              <img
-                src={sectionImg.src}
-                className="w-full h-full object-cover"
+            <div className="relative w-full max-w-[600px] aspect-square rounded-3xl shadow-2xl overflow-hidden">
+              <Image
+                src={sectionImg}
+                alt="Heritage Center"
+                fill
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-black/20"></div>
             </div>
@@ -193,8 +214,8 @@ export default function Home() {
         <section className="py-24 bg-[#f5f3ee]">
           <div className="max-w-4xl mx-auto px-8 text-center">
             <div className="mb-10 flex justify-center">
-              <div className="w-14 h-14 rounded-full border border-[#e4e2dd] flex items-center justify-center text-[#4b0004]">
-                ✿
+              <div className="w-30 h-30 rounded-full border border-[#e4e2dd] flex items-center justify-center">
+                <Image src={logo} alt="logo" width={150} height={150} />
               </div>
             </div>
 

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { submitContactForm } from "@/lib/api/contact";
+import contactHero from "../../../public/images/footer.jpeg";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -60,21 +61,40 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-screen bg-background">
 
       {/* HERO (UNCHANGED) */}
-      <section className="relative h-[400px] md:h-[450px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#4b0004] to-[#73000a] opacity-95" />
+      <section className="relative h-[350px] md:h-[400px] flex items-center justify-center overflow-hidden">
+
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <img
+            src={contactHero.src} // 👉 your image
+            alt="Contact Background"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* DARK GREEN → TRANSPARENT GRADIENT */}
+        <div className="absolute inset-0 bg-gradient-to-r 
+          from-green-900/50 
+          via-green-800/50 
+          to-transparent"
+        />
+
+        {/* KEEP YOUR PATTERN */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M30 0l30 30-30 30-30-30z%22 fill=%22%23ffffff%22 fill-opacity=%220.03%22/%3E%3C/svg%3E')]" />
 
+        {/* CONTENT (ONLY TEXT ENHANCED) */}
         <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 leading-tight font-[Noto_Serif]">
+            {/* SLIGHTLY MORE BOLD */}
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight font-[Noto_Serif] drop-shadow-lg">
               Get in Touch
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto font-[Inter] leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto font-[Inter] leading-relaxed drop-shadow">
               We’re here to help. Reach out for bookings, membership, or general inquiries.
             </p>
           </motion.div>
@@ -126,7 +146,7 @@ export default function ContactPage() {
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
                     Email
                   </h4>
-                  <p className="text-sm">info@assamasociationdelhi.org</p>
+                  <p className="text-sm">info@assamassociationdelhi.org</p>
                 </div>
               </div>
 
@@ -167,10 +187,10 @@ export default function ContactPage() {
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-8">
-                
+
                 <AnimatePresence mode="wait">
                   {success && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
@@ -182,7 +202,7 @@ export default function ContactPage() {
                   )}
 
                   {error && (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
@@ -260,7 +280,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <Button 
+                <Button
                   type="submit"
                   disabled={loading}
                   className="w-full md:w-auto bg-[#4b0004] text-white px-10 py-6 text-sm font-bold tracking-widest hover:bg-[#73000a] transition-all disabled:opacity-70"

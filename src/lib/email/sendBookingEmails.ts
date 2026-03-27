@@ -16,7 +16,7 @@ export async function sendBookingEmails(payload: EmailPayload) {
 
     // 1. Send User Confirmation
     const userEmailPromise = resend.emails.send({
-      from: "Booking Automation <noreply@resend.dev>", // Using Resend dev domain for testing validity safely
+      from: "Assam Association Delhi <info@assamassociationdelhi.org>", 
       to: [userEmail],
       subject: "Booking Request Received - Pending Approval",
       html: `
@@ -39,7 +39,7 @@ export async function sendBookingEmails(payload: EmailPayload) {
 
     // 2. Send Admin Notification
     const adminEmailPromise = resend.emails.send({
-      from: "System Notification <noreply@resend.dev>", 
+      from: "Assam Association Delhi <info@assamassociationdelhi.org>", 
       to: [ADMIN_EMAIL],
       subject: "Action Required: New Booking Request",
       html: `

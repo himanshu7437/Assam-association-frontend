@@ -2,27 +2,27 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Landmark } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import logo from "../../../public/images/AAD_LOGO red.png"
 
 const navItems = [
-  { name: "Home", href: "/" },
-  { name: "About Us", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Notices", href: "/notices" },
-  { name: "Gallery", href: "/gallery" },
-  { name: "Contact", href: "/contact" },
+  { name: "HOME", href: "/" },
+  { name: "ABOUT US", href: "/about" },
+  { name: "SERVICES", href: "/services" },
+  { name: "NOTICES", href: "/notices" },
+  { name: "GALLERY", href: "/gallery" },
+  { name: "CONTACT", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -30,22 +30,33 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  if (!mounted) return (
+    <header className="fixed top-0 w-full z-50 transition-all duration-300 bg-gradient-to-r from-purple-600 to-green-500 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
+        <div className="flex items-center">
+          <span className="font-[Noto_Serif] text-lg sm:text-xl font-bold text-white tracking-wide">
+            Assam Association Delhi
+          </span>
+        </div>
+      </div>
+    </header>
+  );
+
   return (
     <header
       className={cn(
-        "fixed top-0 w-full z-50 border-t-2 border-[#4b0004] transition-all duration-300",
+        "fixed top-0 w-full z-50 transition-all duration-300",
         scrolled
-          ? "bg-white/80 backdrop-blur-md shadow-sm py-3"
-          : "bg-white/70 backdrop-blur-md py-4"
+          ? "bg-gradient-to-r from-purple-600 to-green-500 shadow-md py-3"
+          : "bg-gradient-to-r from-purple-600 to-green-500 py-4"
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Image src={logo} alt="Logo" className="w-12 h-12" />
-          <span className="font-[Noto_Serif] text-lg sm:text-xl font-bold text-[#1b1c19]">
-            ASSAM ASSOCIATION DELHI
+        {/* Brand Name */}
+        <Link href="/" className="flex items-center">
+          <span className="font-[Noto_Serif] text-lg sm:text-xl font-bold text-white tracking-wide">
+            Assam Association Delhi
           </span>
         </Link>
 
@@ -56,10 +67,10 @@ export default function Navbar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "text-sm font-medium tracking-wide transition-colors",
+                "text-sm font-medium tracking-wide transition-all duration-300 relative",
                 pathname === item.href
-                  ? "text-[#4b0004] font-semibold border-b-2 border-[#4b0004] pb-1"
-                  : "text-gray-600 hover:text-[#4b0004]"
+                  ? "text-white font-semibold after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-white"
+                  : "text-white/80 hover:text-white"
               )}
             >
               {item.name}
@@ -69,7 +80,7 @@ export default function Navbar() {
           {/* CTA */}
           <Link
             href="/membership"
-            className="bg-[#4b0004] text-white px-5 py-2 text-sm rounded-sm hover:bg-[#73000a] transition"
+            className="bg-white text-purple-700 px-5 py-2 text-sm rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-sm"
           >
             Join Us
           </Link>
@@ -77,7 +88,7 @@ export default function Navbar() {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden text-[#4b0004]"
+          className="md:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -86,12 +97,12 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t mt-3 px-6 py-6 space-y-6">
+        <div className="md:hidden bg-white/95 backdrop-blur-md border-t mt-3 px-6 py-6 space-y-6">
           {navItems.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="block text-base text-gray-700 hover:text-[#4b0004]"
+              className="block text-base text-gray-700 hover:text-indigo-600 transition"
               onClick={() => setIsOpen(false)}
             >
               {item.name}
@@ -100,7 +111,7 @@ export default function Navbar() {
 
           <Link
             href="/membership"
-            className="block bg-[#4b0004] text-white text-center py-2 rounded-sm"
+            className="block bg-indigo-600 text-white text-center py-2 rounded-lg font-semibold hover:bg-indigo-700 transition"
             onClick={() => setIsOpen(false)}
           >
             Join Us
