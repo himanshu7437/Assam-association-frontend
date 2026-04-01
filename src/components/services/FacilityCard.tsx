@@ -1,13 +1,9 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { Bed, Users, BookOpen, Coffee, Landmark, ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 interface Facility {
   id: string;

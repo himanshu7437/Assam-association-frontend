@@ -7,6 +7,7 @@ import AlbumCard from "@/components/gallery/AlbumCard";
 import Loader from "@/components/gallery/Loader";
 import EmptyState from "@/components/gallery/EmptyState";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function GalleryPage() {
   const [albums, setAlbums] = useState<Album[]>([]);
@@ -58,10 +59,13 @@ export default function GalleryPage() {
                   onClick={() => router.push(`/gallery/${albums[0].id}`)}
                 >
                   <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
-                    <img
+                    <Image
                       src={albums[0].coverImage}
                       alt={albums[0].title}
-                      className="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 1200px"
+                      className="object-cover transition duration-700 group-hover:scale-105"
+                      priority
                     />
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
 

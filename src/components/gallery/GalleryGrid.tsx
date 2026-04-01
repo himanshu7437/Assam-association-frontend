@@ -1,5 +1,5 @@
-import React from "react";
 import { MediaItem } from "@/types";
+import Image from "next/image";
 
 export default function GalleryGrid({ media }: { media: MediaItem[] }) {
   return (
@@ -7,10 +7,12 @@ export default function GalleryGrid({ media }: { media: MediaItem[] }) {
       {media.map((item) => (
         <div key={item.id} className="break-inside-avoid relative group rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300">
           {item.type === "image" ? (
-            <img
+            <Image
               src={item.url}
               alt="Gallery Image"
-              loading="lazy"
+              width={800}
+              height={800}
+              sizes="(max-width: 768px) 100vw, 500px"
               className="w-full h-auto object-cover transform transition duration-700 group-hover:scale-105"
             />
           ) : (

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Landmark, Users, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
 
 const highlights = [
   {
@@ -76,7 +75,7 @@ export default function AboutPreview() {
                   "flex-shrink-0 w-20 h-20 bg-surface-container-low flex items-center justify-center group-hover:bg-primary transition-colors duration-500",
                   "text-primary group-hover:text-white"
                 )}>
-                  {/* @ts-ignore - Lucide icon cloning */}
+                  {/* @ts-expect-error - Lucide icon cloning */}
                   {React.cloneElement(item.icon as React.ReactElement, { size: 36, strokeWidth: 1 })}
                 </div>
                 <div>

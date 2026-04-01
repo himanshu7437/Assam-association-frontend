@@ -129,7 +129,7 @@ export default function BookingForm() {
       setSuccess(true);
       form.reset();
     } catch (err: unknown) {
-      setError(err?.message || "Something went wrong. Please try again later.");
+      setError((err as Error)?.message || "Something went wrong. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }

@@ -13,7 +13,7 @@ import { getPublicNotices } from "@/lib/api/notices";
 export default function Home() {
 
   const [showModal, setShowModal] = useState(false);
-  const [notices, setNotices] = useState<any[]>([]);
+  const [notices, setNotices] = useState<any[]>([]); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -48,7 +48,7 @@ export default function Home() {
 
 
 
-  const getDisplayNotices = (allNotices: any[]) => {
+  const getDisplayNotices = (allNotices: any[]) => { // eslint-disable-line @typescript-eslint/no-explicit-any
     const today = new Date();
 
     // Normalize today (remove time)
@@ -90,7 +90,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [showModal, displayNotices]);
 
-  const formatDate = (dateValue: any) => {
+  const formatDate = (dateValue: string | Date | number) => {
     if (!dateValue) return "";
 
     const date = new Date(dateValue);
@@ -135,10 +135,8 @@ export default function Home() {
                 alt="AAD Logo"
                 width={240}
                 height={240}
-                className="mb-4"
+                className="mb-4 w-[240px] h-auto"
                 style={{
-                  width: "240px",
-                  height: "auto",
                   filter: "hue-rotate(220deg) brightness(1.2) saturate(1.5)",
                 }}
                 priority
@@ -347,7 +345,7 @@ export default function Home() {
             <div className="space-y-16">
               <div>
                 <p className="font-serif italic text-2xl md:text-3xl text-[#1b1c19] leading-relaxed">
-                  "The Association is not just an organization; it's the fragrance of the Kopou flower and the warmth of a Bihu fire in the cold Delhi winters."
+                  &quot;The Association is not just an organization; it&apos;s the fragrance of the Kopou flower and the warmth of a Bihu fire in the cold Delhi winters.&quot;
                 </p>
                 <p className="mt-6 text-[#465f88] font-semibold text-sm">
                   — Dr. Hemanta Baruah, Life Member since 1985
@@ -356,7 +354,7 @@ export default function Home() {
 
               <div>
                 <p className="font-serif italic text-2xl md:text-3xl text-[#1b1c19] leading-relaxed">
-                  "Finding a piece of home at Sankaradeva Bhawan helped me stay rooted while navigating my career in this vast city."
+                  &quot;Finding a piece of home at Sankaradeva Bhawan helped me stay rooted while navigating my career in this vast city.&quot;
                 </p>
                 <p className="mt-6 text-[#465f88] font-semibold text-sm">
                   — Priya Hazarika, Youth Member

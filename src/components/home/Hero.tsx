@@ -4,9 +4,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { ChevronRight, Landmark } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export default function Hero() {
   return (

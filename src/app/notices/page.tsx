@@ -40,7 +40,7 @@ export default function NoticesPage() {
       }
     }
     loadData();
-  }, [activeTab]);
+  }, [activeTab, documents.length, notices.length]);
 
   /* ================= FILTERS ================= */
   const categories = useMemo(() => {
@@ -249,7 +249,12 @@ export default function NoticesPage() {
 }
 
 /* NOTICE CARD */
-function NoticeCard({ notice, setPreviewUrl, setPreviewTitle, pinned = false }: any) {
+function NoticeCard({ notice, setPreviewUrl, setPreviewTitle, pinned = false }: {
+  notice: Notice;
+  setPreviewUrl: React.Dispatch<React.SetStateAction<string | null>>;
+  setPreviewTitle: React.Dispatch<React.SetStateAction<string>>;
+  pinned?: boolean;
+}) {
   return (
     <div className="bg-white p-5 rounded-xl border hover:shadow-sm">
 
@@ -276,7 +281,7 @@ function NoticeCard({ notice, setPreviewUrl, setPreviewTitle, pinned = false }: 
         <div className="flex gap-4 text-sm font-semibold">
           <button
             onClick={() => {
-              setPreviewUrl(notice.url);
+              setPreviewUrl(notice.url || null);
               setPreviewTitle(notice.title);
             }}
             className="text-[#465f88] flex items-center gap-2"
@@ -298,7 +303,11 @@ function NoticeCard({ notice, setPreviewUrl, setPreviewTitle, pinned = false }: 
 }
 
 /* TAB */
-function TabBtn({ children, active, onClick }: any) {
+function TabBtn({ children, active, onClick }: {
+  children: React.ReactNode;
+  active: boolean;
+  onClick: () => void;
+}) {
   return (
     <button
       onClick={onClick}

@@ -196,8 +196,7 @@ export default function ContactPage() {
                       alt="Payment Barcode"
                       width={160}
                       height={160}
-                      className="object-contain"
-                      style={{ width: '100%', height: 'auto' }}
+                      className="object-contain w-full h-auto"
                       priority
                     />
                   </div>

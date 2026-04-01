@@ -1,6 +1,7 @@
 import React from "react";
 import { Album } from "@/types";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function AlbumCard({ album }: { album: Album }) {
   const router = useRouter();
@@ -10,11 +11,13 @@ export default function AlbumCard({ album }: { album: Album }) {
       className="group cursor-pointer"
       onClick={() => router.push(`/gallery/${album.id}`)}
     >
-      <div className="relative overflow-hidden rounded-xl shadow-md">
-        <img
+      <div className="relative overflow-hidden rounded-xl shadow-md h-[280px]">
+        <Image
           src={album.coverImage}
           alt={album.title}
-          className="w-full h-[280px] object-cover transition duration-500 group-hover:scale-105"
+          fill
+          sizes="(max-width: 768px) 100vw, 500px"
+          className="object-cover transition duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
           <span className="bg-white text-[#4b0004] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider">

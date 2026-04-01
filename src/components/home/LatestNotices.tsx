@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Bell, Calendar, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 
 const notices = [
   {

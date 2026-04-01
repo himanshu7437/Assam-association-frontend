@@ -96,5 +96,5 @@ export interface BookingInput {
 export interface Booking extends BookingInput {
   id: string;
   status: BookingStatus;
-  createdAt: Date | any; // eslint-disable-line @typescript-eslint/no-explicit-any // allow any for Firestore Timestamp
+  createdAt?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }

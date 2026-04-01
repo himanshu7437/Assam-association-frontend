@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Loader2, ArrowLeft, Building2, Tag, Info } from "lucide-react";
 import { getFacilityById } from "@/lib/api/services";
