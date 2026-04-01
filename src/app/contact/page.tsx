@@ -9,8 +9,6 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { submitContactForm } from "@/lib/api/contact";
-import contactHero from "../../../public/images/contact2.png";
-import paymentBarcode from "../../../public/images/paymentBarcode.jpg";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -68,7 +66,7 @@ export default function ContactPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src={contactHero}
+            src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053162/contact2_vcebel.png"}
             alt="Contact Background"
             fill
             priority
@@ -192,12 +190,13 @@ export default function ContactPage() {
                   </p>
                   <div className="mx-auto flex justify-center w-[160px]">
                     <Image
-                      src={paymentBarcode}
+                      src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053149/paymentBarcode_tz0mtp.jpg"}
                       alt="Payment Barcode"
                       width={160}
                       height={160}
-                      className="object-contain w-full h-auto"
+                      className="object-contain"
                       priority
+                      unoptimized
                     />
                   </div>
                 </div>

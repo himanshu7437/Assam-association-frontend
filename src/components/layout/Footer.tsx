@@ -17,6 +17,7 @@ import footerBg from "../../../public/images/footer2.png";
             fill
             sizes="100vw"
             className="object-cover object-left md:object-center"
+            priority
           />
         </div>
 

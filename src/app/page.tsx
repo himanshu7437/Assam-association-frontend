@@ -3,11 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import sectionImg from "../../public/images/section-home2.png";
-import logo from "../../public/images/AAD_LOGO red.svg";
-import pillar1 from "../../public/images/pillar-1-2.png";
-import pillar2 from "../../public/images/pillar-2-2.png";
-import pillar3 from "../../public/images/pillar-3.jpeg";
 import { getPublicNotices } from "@/lib/api/notices";
 
 export default function Home() {
@@ -131,7 +126,7 @@ export default function Home() {
 
               {/* BIG LOGO */}
               <Image
-                src={logo}
+                src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"}
                 alt="AAD Logo"
                 width={240}
                 height={240}
@@ -167,15 +162,15 @@ export default function Home() {
 
           <div className="flex gap-3 px-3 md:px-4 h-[220px] md:h-full">
             <div className="relative w-[34%] h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar1} alt="pillar1" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
+              <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-1-2_qz6tlv.png"} alt="pillar1" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
             </div>
 
             <div className="relative w-[32%] h-full rounded-2xl overflow-hidden shadow-xl scale-105">
-              <Image src={pillar2} alt="pillar2" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
+              <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053173/pillar-2-2_uwn2zw.png"} alt="pillar2" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
             </div>
 
             <div className="relative w-[34%] h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar3} alt="pillar3" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover object-top" priority />
+              <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-3-2_nfkzo4.png"} alt="pillar3" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover object-top" priority />
             </div>
           </div>
 
@@ -252,7 +247,7 @@ export default function Home() {
                 <div className="absolute top-0 left-0 w-full h-full border-2 border-[#B5824C] rounded-lg -z-10 translate-x-[-15px] translate-y-[-15px]"></div>
                 <div className="relative h-[500px] w-full rounded-lg overflow-hidden shadow-2xl">
                   <Image
-                    src={sectionImg}
+                    src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775052791/section-home2_obkbuq.png"}
                     alt="Vision"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
@@ -338,7 +333,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-8 text-center">
             <div className="mb-10 flex justify-center">
               <div className="w-30 h-30 rounded-full border border-[#e4e2dd] flex items-center justify-center">
-                <Image src={logo} alt="logo" width={150} height={150} style={{ width: "150px", height: "auto" }} />
+                <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"} alt="logo" width={150} height={150} style={{ width: "150px", height: "auto" }} />
               </div>
             </div>
 

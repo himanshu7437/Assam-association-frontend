@@ -43,12 +43,13 @@ export default function Navbar() {
         {/* BRAND */}
         <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/images/AAD_LOGO red.svg"
+            src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"}
             alt="Assam Association Delhi Logo"
             width={42}
             height={42}
             className="object-contain"
-            style={{ filter: "brightness(0) invert(1)" }}
+            style={{ filter: "brightness(0) invert(1)", width: "42px", height: "auto" }}
+            priority
           />
           <span className="font-[Noto_Serif] text-lg md:text-xl font-bold text-white tracking-wide">
             Assam Association Delhi
