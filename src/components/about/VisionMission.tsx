@@ -2,28 +2,35 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Rocket, Eye, ShieldCheck, Users, Landmark, TrendingUp } from "lucide-react";
+import {
+  Rocket,
+  Eye,
+  ShieldCheck,
+  Users,
+  Landmark,
+  TrendingUp,
+} from "lucide-react";
 
 export default function VisionMission() {
   const values = [
     {
       title: "Integrity",
-      desc: "Honesty and transparency in all our administrative and financial operations.",
+      desc: "We uphold honesty and transparency in all administrative and financial matters.",
       icon: ShieldCheck,
     },
     {
       title: "Inclusivity",
-      desc: "Welcoming all members of the community regardless of background or status.",
+      desc: "We welcome every member of the community, fostering unity beyond differences.",
       icon: Users,
     },
     {
       title: "Heritage Preservation",
-      desc: "Active commitment to keeping Assamese traditions alive for future generations.",
+      desc: "We actively preserve and promote Assamese traditions for future generations.",
       icon: Landmark,
     },
     {
       title: "Community Growth",
-      desc: "Fostering personal and collective advancement through shared resources.",
+      desc: "We encourage collective progress through shared support and opportunities.",
       icon: TrendingUp,
     },
   ];
@@ -32,54 +39,55 @@ export default function VisionMission() {
     <section id="vision">
       <div className="max-w-7xl mx-auto">
 
-        {/* Mission & Vision */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 mb-24">
+        {/* ===== MISSION & VISION ===== */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-24">
 
-          {/* Mission */}
+          {/* MISSION CARD */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-4"
+            className="bg-white p-8 md:p-10 rounded-2xl border border-[#e4e2dd] shadow-sm hover:shadow-lg transition"
           >
-            <div className="flex items-center gap-3">
-              <Rocket className="text-[#4b0004] w-8 h-8" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#1b1c19] font-[Noto_Serif]">
+            <div className="flex items-center gap-3 mb-4">
+              <Rocket className="text-[#4b0004] w-7 h-7" />
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1b1c19] font-[Noto_Serif]">
                 Our Mission
               </h2>
             </div>
 
-            <p className="text-[#44474e] text-base sm:text-lg leading-relaxed">
-              To empower and unify the Assamese diaspora in Delhi-NCR by providing a robust platform
-              for socio-cultural exchange, supporting educational pursuits, and ensuring the welfare
-              of our community members in times of need.
+            <p className="text-[#44474e] text-base md:text-lg leading-relaxed">
+              To empower and unify the Assamese diaspora in Delhi-NCR by creating
+              a vibrant platform for socio-cultural exchange, supporting education,
+              and ensuring the welfare of community members.
             </p>
           </motion.div>
 
-          {/* Vision */}
+          {/* VISION CARD */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="space-y-4"
+            className="bg-white p-8 md:p-10 rounded-2xl border border-[#e4e2dd] shadow-sm hover:shadow-lg transition"
           >
-            <div className="flex items-center gap-3">
-              <Eye className="text-[#4b0004] w-8 h-8" />
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#1b1c19] font-[Noto_Serif]">
+            <div className="flex items-center gap-3 mb-4">
+              <Eye className="text-[#4b0004] w-7 h-7" />
+              <h2 className="text-2xl md:text-3xl font-bold text-[#1b1c19] font-[Noto_Serif]">
                 Our Vision
               </h2>
             </div>
 
-            <p className="text-[#44474e] text-base sm:text-lg leading-relaxed">
-              To become a global beacon for Assamese culture and heritage, fostering a deep sense
-              of identity and pride while building bridges between the people of Assam and the
-              diverse communities of India's capital.
+            <p className="text-[#44474e] text-base md:text-lg leading-relaxed">
+              To be a leading cultural institution representing Assamese heritage,
+              fostering identity, pride, and meaningful connections across diverse
+              communities in India and beyond.
             </p>
           </motion.div>
+
         </div>
 
-        {/* Core Values */}
+        {/* ===== CORE VALUES ===== */}
         <div>
           <div className="text-center mb-16">
             <span className="text-[#4b0004] font-bold tracking-widest uppercase text-xs mb-2 block">
@@ -104,11 +112,11 @@ export default function VisionMission() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white p-8 sm:p-10 rounded-lg text-center shadow-sm border border-[#e4e2dd]"
+                  className="bg-white p-8 rounded-xl text-center shadow-sm border border-[#e4e2dd] hover:shadow-md hover:-translate-y-1 transition-all"
                 >
-                  <Icon className="w-10 h-10 text-[#4b0004] mx-auto mb-6" />
+                  <Icon className="w-10 h-10 text-[#4b0004] mx-auto mb-5" />
 
-                  <h3 className="text-lg sm:text-xl font-bold mb-3 font-[Noto_Serif]">
+                  <h3 className="text-lg font-bold mb-2 font-[Noto_Serif]">
                     {value.title}
                   </h3>
 
