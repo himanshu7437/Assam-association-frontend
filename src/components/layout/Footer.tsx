@@ -17,7 +17,7 @@ export default function Footer() {
             alt="Footer Background"
             fill
             sizes="100vw"
-            className="object-cover object-[5.2%_center] md:object-left"
+            className="object-cover object-[5.5%_center] md:object-left"
             priority
           />
         </div>
