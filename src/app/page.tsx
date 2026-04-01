@@ -117,64 +117,92 @@ export default function Home() {
       <div className="relative z-10">
 
         {/* HERO (UNCHANGED) */}
-        <section className="grid grid-cols-1 md:grid-cols-[38%_62%] min-h-[calc(100vh-4rem)] items-center">
+        <section className="flex justify-center bg-[#fbf9f4]">
 
-          {/* LEFT */}
-          <div className="flex items-center h-full px-6 md:pl-20 md:pr-8 lg:pl-28 lg:pr-12 xl:pl-36 xl:pr-16 py-10 bg-[#fbf9f4]">
+  {/* CONTAINER CONTROL */}
+  <div className="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-[minmax(420px,42%)_1fr] min-h-[100dvh]">
 
-            <div className="max-w-xl w-full">
+    {/* LEFT */}
+    <div className="flex items-center px-6 sm:px-10 lg:px-16 xl:px-24 py-12">
 
-              {/* BIG LOGO */}
-              <Image
-                src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"}
-                alt="AAD Logo"
-                width={240}
-                height={240}
-                className="mb-4 w-[240px] h-auto"
-                style={{
-                  filter: "hue-rotate(220deg) brightness(1.2) saturate(1.5)",
-                }}
-                priority
-              />
+      <div className="max-w-xl w-full">
 
-              {/* BIG HEADING */}
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#4b0004] mb-3 font-serif leading-[1.05]">
-                Assam <br />
-                Association <br />
-                Delhi
-              </h1>
+        {/* LOGO */}
+        <Image
+          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"}
+          alt="AAD Logo"
+          width={200}
+          height={200}
+          className="mb-5 w-[180px] sm:w-[200px] md:w-[220px] h-auto"
+          style={{
+            filter: "hue-rotate(220deg) brightness(1.2) saturate(1.5)",
+          }}
+          priority
+        />
 
-              {/* SUBTITLE */}
-              <p className="text-lg md:text-xl text-[#465f88] mb-2 font-serif font-medium">
-                Preserving Heritage, Fostering Community in Delhi
-              </p>
+        {/* HEADING */}
+        <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#4b0004] mb-4 font-serif leading-tight">
+          Assam <br />
+          Association <br />
+          Delhi
+        </h1>
 
-              {/* SMALLER BUTTON */}
-              <Link
-                href="/about"
-                className="bg-[#B5824C] text-white px-6 py-2.5 rounded text-sm font-semibold hover:scale-105 transition shadow-sm inline-block"
-              >
-                Explore Our Legacy
-              </Link>
+        {/* SUBTITLE */}
+        <p className="text-lg sm:text-xl text-[#465f88] mb-6 font-serif font-medium">
+          Preserving Heritage, Fostering Community in Delhi
+        </p>
 
-            </div>
-          </div>
+        {/* BUTTON */}
+        <Link
+          href="/about"
+          className="bg-[#B5824C] text-white px-6 py-3 rounded text-base font-semibold hover:scale-105 transition shadow-sm inline-block"
+        >
+          Explore Our Legacy
+        </Link>
 
-          <div className="flex gap-3 px-3 md:px-4 h-[220px] md:h-full">
-            <div className="relative w-[34%] h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-1-2_qz6tlv.png"} alt="pillar1" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
-            </div>
+      </div>
+    </div>
 
-            <div className="relative w-[32%] h-full rounded-2xl overflow-hidden shadow-xl scale-105">
-              <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053173/pillar-2-2_uwn2zw.png"} alt="pillar2" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
-            </div>
+    {/* RIGHT - PILLARS */}
+    <div className="flex gap-2 px-2 sm:px-3 h-[260px] sm:h-[320px] md:h-[420px] lg:h-auto max-h-[900px]">
 
-            <div className="relative w-[34%] h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-3-2_nfkzo4.png"} alt="pillar3" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover object-top" priority />
-            </div>
-          </div>
+      <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg">
+        <Image
+          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-1-2_qz6tlv.png"}
+          alt="pillar1"
+          fill
+          className="object-cover"
+          sizes="33vw"
+          priority
+        />
+      </div>
 
-        </section>
+      <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg scale-105">
+        <Image
+          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053173/pillar-2-2_uwn2zw.png"}
+          alt="pillar2"
+          fill
+          className="object-cover"
+          sizes="33vw"
+          priority
+        />
+      </div>
+
+      <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg">
+        <Image
+          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-3-2_nfkzo4.png"}
+          alt="pillar3"
+          fill
+          className="object-cover object-top"
+          sizes="33vw"
+          priority
+        />
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
         {/* NOTICES */}
         <section className="py-20 bg-[#f5f3ee]">
@@ -251,7 +279,7 @@ export default function Home() {
                     alt="Vision"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover grayscale hover:grayscale-0 transition duration-700"
+                    className="object-cover"
                   />
                 </div>
               </div>
