@@ -5,21 +5,23 @@ import Link from "next/link";
 import Image from "next/image";
 import footerBg from "../../../public/images/footer2.png";
 
-  export default function Footer() {
-    return (
-      <footer className="relative w-full text-white mt-20 overflow-hidden">
+export default function Footer() {
+  return (
+    <footer className="relative w-full text-white mt-20 overflow-hidden">
 
-        {/* Background Image */}
+      {/* Background Image */}
+      <div className="absolute inset-0">
         <div className="absolute inset-0">
           <Image
             src={footerBg}
             alt="Footer Background"
             fill
             sizes="100vw"
-            className="object-cover object-left md:object-center"
+            className="object-cover object-[4%_center] md:object-left"
             priority
           />
         </div>
+      </div>
 
       {/* PROFESSIONAL OVERLAY (FIXED) */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-900/60 to-green-900/60 backdrop-blur-[0.1px]" />
