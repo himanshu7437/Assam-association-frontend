@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import PageHeader from "@/components/shared/PageHeader";
-import { motion } from "framer-motion";
-import { Book, Download, ArrowRight, Eye, Loader2 } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Book, Download, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { getDocuments } from "@/lib/api/documents";
 import { DocumentItem } from "@/types";
 
@@ -18,9 +16,6 @@ export default function PublicationsPage() {
     async function loadData() {
       try {
         const data = await getDocuments();
-        // Since this is publications, maybe we filter by 'publication'? 
-        // But the requirement says "fetch from documents". Let's assume they are all meant for this page,
-        // or we can just render the items directly. I will render what we fetch.
         setPublications(data);
       } catch (error) {
         console.error("Error loading publications:", error);
@@ -31,84 +26,200 @@ export default function PublicationsPage() {
     loadData();
   }, []);
 
-  return (
-    <div className="flex flex-col min-h-screen pb-24">
-      <PageHeader 
-        title="Publications" 
-        description="Preserving our literary soul through magazines, souvenirs, and periodic newsletters."
-        badge="Literary Heritage"
-      />
+  const samayikData = publications.filter(p => p.category === "samayik");
+  const otherData = publications.filter(p => p.category !== "samayik");
 
-      <section className="container mx-auto px-4 md:px-6 mt-12 max-w-6xl min-h-[400px]">
+  const groupedSamayik = samayikData.reduce((acc: Record<string, DocumentItem[]>, item) => {
+    const year = item.year;
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(item);
+    return acc;
+  }, {});
+
+  return (
+    <div className="bg-background">
+
+      {/* ================= HERO ================= */}
+      <section className="pt-24 pb-10">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid md:grid-cols-12 gap-8 items-end">
+
+            <div className="md:col-span-8">
+              <span className="text-primary text-xs tracking-[0.3em] font-bold uppercase mb-4 block">
+                Literary Archive
+              </span>
+
+              <h1 className="text-5xl md:text-6xl font-serif font-bold text-primary tracking-tight">
+                Publications
+              </h1>
+            </div>
+
+            <div className="md:col-span-4">
+              <p className="text-muted-foreground leading-relaxed">
+                Explore our curated collection of Samayik editions, magazines, and books
+                preserving Assam’s cultural and literary heritage.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ================= CONTENT ================= */}
+      <section className="pb-16 min-h-[400px]">
+
         {isLoading ? (
           <div className="flex justify-center items-center h-48">
             <Loader2 className="animate-spin text-primary" size={40} />
           </div>
-        ) : publications.length === 0 ? (
-          <div className="text-center text-muted-foreground py-20">
-            No publications available at the moment.
-          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {publications.map((pub, idx) => (
-              <motion.div
-                key={pub.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex flex-col h-full bg-white rounded-3xl border border-border hover:border-primary/20 hover:shadow-2xl hover:-translate-y-2 transition-all p-8"
-              >
-                <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6">
-                  <Book size={28} />
-                </div>
-                <div className="flex items-center justify-between mb-4">
-                   <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{pub.type}</span>
-                   <span className="text-[10px] font-bold uppercase tracking-widest text-primary">{pub.year}</span>
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-primary mb-4 leading-tight">{pub.title}</h3>
-                <p className="text-sm text-muted-foreground flex-1 leading-relaxed mb-10">
-                   {pub.description || "No description provided."}
-                </p>
-                
-                <div className="flex flex-col gap-3">
-                  {pub.url && (
-                    <Button 
-                      className="w-full h-12 rounded-full font-bold shadow-lg shadow-primary/10"
-                      onClick={() => window.open(pub.url, "_blank")}
-                    >
-                      <Download size={18} className="mr-2" /> Download Full PDF
-                    </Button>
-                  )}
-                   <Button variant="ghost" className="w-full h-12 rounded-full font-bold hover:bg-muted hover:text-primary transition-colors">
-                     <Eye size={18} className="mr-2" /> Preview Sample
-                   </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <>
+            {/* ================= SAMAYIK ================= */}
+            <div className="bg-muted/30">
+              <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-12">
+                  Samayik
+                </h2>
+
+                {Object.keys(groupedSamayik).length === 0 ? (
+                  <p className="text-muted-foreground">
+                    No Samayik available.
+                  </p>
+                ) : (
+                  <div className="space-y-12">
+                    {Object.keys(groupedSamayik)
+                      .sort((a, b) => Number(b) - Number(a))
+                      .map((year) => (
+                        <div key={year}>
+                          <h3 className="text-xl font-bold text-secondary mb-6">
+                            {year}
+                          </h3>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {groupedSamayik[year].map((item: DocumentItem) => (
+                              <div
+                                key={item.id}
+                                className="bg-background border border-border rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between"
+                              >
+                                <div>
+                                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
+                                    <Book size={22} />
+                                  </div>
+
+                                  <h4 className="text-lg font-serif font-bold text-primary mb-2">
+                                    {item.name}
+                                  </h4>
+
+                                  <p className="text-sm text-muted-foreground">
+                                    Samayik Publication
+                                  </p>
+                                </div>
+
+                                {item.url && (
+                                  <Button
+                                    className="mt-6 w-full"
+                                    onClick={() => window.open(item.url, "_blank")}
+                                  >
+                                    <Download size={16} className="mr-2" />
+                                    PDF
+                                  </Button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+            {/* ================= OTHER PUBLICATIONS ================= */}
+            <div className="bg-background">
+              <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-12">
+                  Other Books & Magazines
+                </h2>
+
+                {otherData.length === 0 ? (
+                  <p className="text-muted-foreground">
+                    No publications available.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    {otherData.map((pub, idx) => (
+                      <motion.div
+                        key={pub.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="bg-muted/30 border border-border rounded-2xl p-8 hover:shadow-xl transition flex flex-col"
+                      >
+                        <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6">
+                          <Book size={26} />
+                        </div>
+
+                        <h3 className="text-2xl font-serif font-bold text-primary mb-4">
+                          {pub.name}
+                        </h3>
+
+                        <p className="text-sm text-muted-foreground flex-1 mb-6">
+                          No description provided.
+                        </p>
+
+                        {pub.url && (
+                          <Button
+                            className="w-full"
+                            onClick={() => window.open(pub.url, "_blank")}
+                          >
+                            <Download size={18} className="mr-2" />
+                            Download PDF
+                          </Button>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+          </>
         )}
 
-        <div className="mt-24 p-12 rounded-[3rem] bg-primary text-primary-foreground text-center relative overflow-hidden">
-           <div className="relative z-10 max-w-2xl mx-auto">
-              <h2 className="text-3xl font-serif font-bold mb-6 italic text-secondary">Call for Submissions</h2>
-              <p className="text-primary-foreground/70 mb-10 leading-relaxed text-lg font-light">
-                Do you have a story, poem, or research paper related to Assam? 
-                We invite contributions for our upcoming annual magazine.
-              </p>
-              <Link 
-                href="/contact"
-                className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "rounded-full px-12 h-14 font-bold")}
-              >
-                Submit Your Entry <ArrowRight size={18} className="ml-2" />
-              </Link>
-           </div>
-           
-           {/* Abstract Design */}
-           <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 translate-y-1/2 blur-3xl p-0" />
-           <div className="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2 blur-3xl p-0" />
+      </section>
+
+      {/* ================= CTA ================= */}
+      <section className="py-20 bg-surface-container-low">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+
+          <span className="text-primary font-bold tracking-[0.4em] text-xs uppercase mb-6 block">
+            Contributions
+          </span>
+
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#1B365D] mb-8">
+            Submit Your Work
+          </h2>
+
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+            Share your stories, research, or creative writings with our community and
+            become part of Assam Association Delhi’s literary legacy.
+          </p>
+
+          <Link
+            href="/contact"
+            className="inline-block border border-primary px-8 py-3 text-xs font-bold uppercase tracking-[0.3em] text-primary hover:bg-primary hover:text-white transition-all duration-300"
+          >
+            Get In Touch
+          </Link>
+
         </div>
       </section>
+
     </div>
   );
 }

@@ -1,6 +1,7 @@
 export interface Notice {
   id: string;
   title: string;
+  description: string;
   category: string;
   date: string;
   pinned?: boolean;
@@ -15,14 +16,40 @@ export interface Member {
   email?: string;
 }
 
-export interface Service {
+export type FacilityType = "simple" | "accommodation" | "event";
+
+export interface Room {
+  name: string;
+  description: string;
+  price: string;
+  images?: string[];
+  inclusions?: string;
+  bookingPolicy?: string;
+  checkIn?: string;
+  checkOut?: string;
+}
+
+export interface PricingItem {
+  duration: string;
+  amount: string | number;
+}
+
+export interface Facility {
   id: string;
   name: string;
-  category: string;
   description: string;
   image: string;
-  price?: string;
-  createdAt?: any;
+  type: FacilityType;
+  gallery?: string[];
+  createdAt?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+
+  // Accommodation specific
+  rooms?: Room[];
+
+  // Event specific
+  pricing?: PricingItem[];
+  bookingPolicy?: string;
+  remarks?: string;
 }
 
 export interface MediaItem {
@@ -38,15 +65,16 @@ export interface Album {
   itemCount: number;
   date: string;
   media: MediaItem[];
-  createdAt?: any;
+  createdAt?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export interface DocumentItem {
-  id: string;
-  title: string;
-  type: string;
+  id?: string;
+  name: string;
+  category: string;
   year: string;
-  description?: string;
+  size: string;
+  date: string;
   url?: string;
 }
 
@@ -56,7 +84,11 @@ export interface BookingInput {
   name: string;
   email: string;
   phone: string;
-  facility: string;
+  facilityId: string;
+  facilityName: string;
+  type: string;
+  room?: string;
+  duration?: string;
   date: Date;
   message?: string;
 }
@@ -64,5 +96,5 @@ export interface BookingInput {
 export interface Booking extends BookingInput {
   id: string;
   status: BookingStatus;
-  createdAt: Date | any; // allow any for Firestore Timestamp
+  createdAt: Date | any; // eslint-disable-line @typescript-eslint/no-explicit-any // allow any for Firestore Timestamp
 }

@@ -70,7 +70,7 @@ export async function sendBookingEmails(payload: EmailPayload) {
     }
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[EmailService] Critical error sending emails:", error);
     return { success: false, error: error?.message || "Internal Email Error" };
   }

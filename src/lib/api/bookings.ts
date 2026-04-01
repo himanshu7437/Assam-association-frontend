@@ -20,7 +20,7 @@ export async function requestBooking(data: BookingInput): Promise<string> {
       const emailPayload = {
         userEmail: data.email,
         userName: data.name,
-        facility: data.facility,
+        facility: data.facilityName,
         date: formattedDate,
       };
 

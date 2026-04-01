@@ -1,30 +1,40 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { Download, Calendar, Folder, Users, BookOpen, Loader2, Pin } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  Download,
+  Calendar,
+  Loader2,
+  Pin,
+  Eye,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
 import { getPublicNotices } from "@/lib/api/notices";
 import { getDocuments } from "@/lib/api/documents";
 import { Notice, DocumentItem } from "@/types";
 
 export default function NoticesPage() {
-  const [activeTab, setActiveTab] = useState<"notices" | "documents">("notices");
+  const [activeTab, setActiveTab] = useState<"notices" | "documents">("documents");
   const [notices, setNotices] = useState<Notice[]>([]);
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewTitle, setPreviewTitle] = useState<string>("");
+
+  const [category, setCategory] = useState("All");
+  const [year, setYear] = useState("All");
 
   useEffect(() => {
     async function loadData() {
       setIsLoading(true);
       try {
         if (activeTab === "notices" && notices.length === 0) {
-          const data = await getPublicNotices();
-          setNotices(data);
+          setNotices(await getPublicNotices());
         } else if (activeTab === "documents" && documents.length === 0) {
-          const data = await getDocuments();
-          setDocuments(data);
+          setDocuments(await getDocuments());
         }
-      } catch (error) {
-        console.error("Failed to load data:", error);
       } finally {
         setIsLoading(false);
       }
@@ -32,229 +42,270 @@ export default function NoticesPage() {
     loadData();
   }, [activeTab]);
 
+  /* ================= FILTERS ================= */
+  const categories = useMemo(() => {
+    const set = new Set(documents.map((d) => d.category));
+    return ["All", ...Array.from(set)];
+  }, [documents]);
+
+  const years = useMemo(() => {
+    const set = new Set(documents.map((d) => d.year));
+    return ["All", ...Array.from(set)];
+  }, [documents]);
+
+  const filteredDocs = useMemo(() => {
+    return documents
+      .filter((doc) => {
+        return (
+          (category === "All" || doc.category === category) &&
+          (year === "All" || doc.year === year)
+        );
+      })
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [documents, category, year]);
+
+  const pinnedNotices = notices.filter((n) => n.pinned);
+  const normalNotices = notices.filter((n) => !n.pinned);
+
+  const getDownloadUrl = (url: string) => {
+    return url.replace("upload/", "upload/fl_attachment/");
+  };
   return (
-    <div className="bg-[#fbf9f4] text-[#1b1c19] min-h-screen">
+    <div className="bg-[#fbf9f4] min-h-screen text-[#1b1c19]">
 
       {/* HEADER */}
-      <div className="max-w-7xl mx-auto px-6 pt-32 pb-16">
-        <h1 className="text-5xl font-serif font-bold text-[#4b0004] mb-4">
+      <div className="max-w-7xl mx-auto px-6 pt-28 pb-10">
+        <h1 className="text-4xl md:text-5xl font-serif font-bold text-[#4b0004]">
           Notices & Documents
         </h1>
-        <div className="w-24 h-[2px] bg-[#4b0004] mb-6" />
-        <p className="max-w-2xl text-lg text-gray-600">
-          Access official records, meeting minutes, and annual publications of
-          the Assam Association Delhi.
+        <p className="text-gray-600 mt-4 max-w-xl">
+          Official repository of documents, certificates, reports, and public notices.
         </p>
       </div>
 
-      {/* MAIN LAYOUT */}
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row gap-16">
-
-        {/* SIDEBAR */}
-        <aside className="md:w-1/4">
-          <div className="sticky top-32">
-            <p className="text-xs uppercase tracking-widest text-gray-500 mb-6">
-              Repository Folders
-            </p>
-
-            <div className="space-y-2 text-sm">
-              <SidebarItem 
-                icon={<Calendar size={18} />} 
-                label="Notices (Year Wise)" 
-                active={activeTab === "notices"}
-                onClick={() => setActiveTab("notices")}
-              />
-              <SidebarItem
-                icon={<Folder size={18} />}
-                label="Official Documents"
-                active={activeTab === "documents"}
-                onClick={() => setActiveTab("documents")}
-              />
-              <SidebarItem icon={<Users size={18} />} label="AGM-GBM Minutes" />
-              <SidebarItem icon={<BookOpen size={18} />} label="Publications" />
-            </div>
-
-            {/* Assistance Box */}
-            <div className="mt-12 p-6 bg-gray-100">
-              <h4 className="font-serif font-bold text-[#465f88] mb-2">
-                Need Assistance?
-              </h4>
-              <p className="text-xs text-gray-600">
-                Contact the General Secretary for specific document requests.
-              </p>
-            </div>
-          </div>
-        </aside>
-
-        {/* CONTENT */}
-        <section className="flex-1 min-h-[400px]">
-          {isLoading ? (
-            <div className="flex justify-center items-center h-48 bg-white shadow-sm border">
-               <Loader2 className="animate-spin text-[#4b0004]" size={40} />
-            </div>
-          ) : (
-            <>
-              {/* TABLE CARD */}
-              <div className="bg-white shadow-sm border">
-                {/* HEADER */}
-                <div className="p-8 border-b flex justify-between">
-                  <h2 className="text-2xl font-serif font-semibold">
-                    {activeTab === "notices" ? "Public Notices" : "Official Documents"}
-                  </h2>
-                  <span className="text-xs bg-gray-100 px-3 py-1">
-                    {activeTab === "notices" ? notices.length : documents.length} {activeTab === "notices" ? "Notices found" : "Documents Found"}
-                  </span>
-                </div>
-
-                {/* TABLE */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                      <tr className="bg-gray-100 text-xs uppercase text-gray-500">
-                        <th className="px-8 py-4">Title</th>
-                        <th className="px-8 py-4">Category</th>
-                        <th className="px-8 py-4">Last Updated</th>
-                        <th className="px-8 py-4 text-right">Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {activeTab === "notices" && notices.length === 0 && (
-                        <tr><td colSpan={4} className="text-center py-10 text-gray-500">No notices found.</td></tr>
-                      )}
-                      {activeTab === "documents" && documents.length === 0 && (
-                        <tr><td colSpan={4} className="text-center py-10 text-gray-500">No documents found.</td></tr>
-                      )}
-
-                      {/* Render Notices */}
-                      {activeTab === "notices" && notices.map((notice) => (
-                        <tr
-                          key={notice.id}
-                          className="border-t hover:bg-gray-50 transition"
-                        >
-                          <td className="px-8 py-6 font-semibold flex items-center gap-2">
-                            {notice.pinned && <Pin size={16} className="text-[#4b0004]" fill="currentColor" />}
-                            {notice.title}
-                          </td>
-                          <td className="px-8 py-6">
-                            <span className="text-xs font-bold px-2 py-1 bg-gray-100 text-gray-600 rounded uppercase tracking-wider">
-                              {notice.category}
-                            </span>
-                          </td>
-                          <td className="px-8 py-6 text-sm text-gray-600">
-                            {notice.date}
-                          </td>
-                          <td className="px-8 py-6 text-right">
-                            {notice.url ? (
-                               <button 
-                                 className="flex items-center gap-2 text-[#4b0004] text-xs font-bold hover:opacity-70 ml-auto"
-                                 onClick={() => window.open(notice.url, "_blank")}
-                               >
-                                 DOWNLOAD PDF <Download size={16} />
-                               </button>
-                            ) : (
-                               <span className="text-gray-400 text-xs">No Attachment</span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-
-                      {/* Render Documents */}
-                      {activeTab === "documents" && documents.map((doc) => (
-                        <tr
-                          key={doc.id}
-                          className="border-t hover:bg-gray-50 transition"
-                        >
-                          <td className="px-8 py-6 font-semibold">
-                            {doc.title}
-                          </td>
-                          <td className="px-8 py-6 text-sm text-gray-600">
-                            {doc.type || "Document"}
-                          </td>
-                          <td className="px-8 py-6 text-sm text-gray-600">
-                            {doc.year}
-                          </td>
-                          <td className="px-8 py-6 text-right">
-                            {doc.url ? (
-                              <button 
-                                className="flex items-center gap-2 text-[#4b0004] text-xs font-bold hover:opacity-70 ml-auto"
-                                onClick={() => window.open(doc.url, "_blank")}
-                              >
-                                DOWNLOAD PDF <Download size={16} />
-                              </button>
-                            ) : (
-                              <span className="text-gray-400 text-xs">No Attachment</span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* BOTTOM SECTION */}
-          <div className="mt-16 grid md:grid-cols-2 gap-8">
-
-            {/* IMAGE CARD */}
-            <div className="relative h-64 overflow-hidden group">
-              <img
-                src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700"
-              />
-              <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-xl font-serif font-bold">
-                  Latest Publication
-                </h3>
-                <p className="text-sm">Winter Edition 2023</p>
-              </div>
-            </div>
-
-            {/* TEXT CARD */}
-            <div className="border p-8 flex flex-col justify-center">
-              <h3 className="text-2xl font-serif font-bold mb-4">
-                Historical Archive
-              </h3>
-              <p className="text-gray-600 mb-6 text-sm">
-                Explore our digitised collection of notices dating back to 1980.
-              </p>
-              <button className="text-[#4b0004] text-xs font-bold uppercase flex items-center gap-2">
-                Explore Archive →
-              </button>
-            </div>
-
-          </div>
-        </section>
+      {/* TABS */}
+      <div className="max-w-7xl mx-auto px-6 mb-6 flex gap-3">
+        <TabBtn active={activeTab === "documents"} onClick={() => setActiveTab("documents")}>
+          Documents
+        </TabBtn>
+        <TabBtn active={activeTab === "notices"} onClick={() => setActiveTab("notices")}>
+          Notices
+        </TabBtn>
       </div>
+
+      <div className="max-w-7xl mx-auto px-6 pb-20">
+
+        {/* LOADING */}
+        {isLoading && (
+          <div className="flex justify-center py-20">
+            <Loader2 className="animate-spin text-[#4b0004]" size={40} />
+          </div>
+        )}
+
+        {/* ================= DOCUMENTS ================= */}
+        {!isLoading && activeTab === "documents" && (
+          <>
+            {/* FILTER BAR */}
+            <div className="flex flex-wrap gap-3 mb-8">
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="px-4 py-2 border rounded-lg text-sm bg-white"
+              >
+                {categories.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+
+              <select
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="px-4 py-2 border rounded-lg text-sm bg-white"
+              >
+                {years.map((y) => (
+                  <option key={y}>{y}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* DOCUMENT LIST */}
+            <div className="space-y-4">
+              {filteredDocs.map((doc) => (
+                <div
+                  key={doc.id}
+                  className="bg-white p-4 md:p-5 rounded-xl border hover:shadow-sm transition flex flex-col md:flex-row md:items-center justify-between gap-4"
+                >
+                  {/* LEFT */}
+                  <div className="flex items-start gap-4">
+                    <div className="bg-red-50 text-red-600 p-3 rounded-lg">
+                      <FileText size={20} />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-lg leading-tight">
+                        {doc.name}
+                      </h3>
+
+                      <p className="text-sm text-gray-500 mt-1">
+                        {doc.category} • {doc.year} • {doc.size}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* RIGHT ACTIONS */}
+                  <div className="flex gap-4 text-sm font-semibold">
+                    <button
+                      onClick={() => {
+                        setPreviewUrl(doc.url!);
+                        setPreviewTitle(doc.name);
+                      }}
+                      className="flex items-center gap-2 text-[#465f88]"
+                    >
+                      <Eye size={16} /> Preview
+                    </button>
+
+                    <a
+                      href={getDownloadUrl(doc.url!)}
+                      download
+                      className="flex items-center gap-2 text-[#4b0004]"
+                    >
+                      <Download size={16} /> Download
+                    </a>
+                  </div>
+                </div>
+              ))}
+
+              {filteredDocs.length === 0 && (
+                <p className="text-gray-500">No documents found.</p>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* ================= NOTICES ================= */}
+        {!isLoading && activeTab === "notices" && (
+          <div className="space-y-10">
+
+            {/* PINNED */}
+            {pinnedNotices.length > 0 && (
+              <div>
+                <h2 className="text-lg font-semibold mb-4 text-[#4b0004]">
+                  Pinned Notices
+                </h2>
+
+                <div className="space-y-4">
+                  {pinnedNotices.map((notice) => (
+                    <NoticeCard key={notice.id} notice={notice} setPreviewUrl={setPreviewUrl} setPreviewTitle={setPreviewTitle} pinned />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ALL */}
+            <div>
+              <h2 className="text-lg font-semibold mb-4">
+                All Notices
+              </h2>
+
+              <div className="space-y-4">
+                {normalNotices.map((notice) => (
+                  <NoticeCard key={notice.id} notice={notice} setPreviewUrl={setPreviewUrl} setPreviewTitle={setPreviewTitle} />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ================= PDF MODAL ================= */}
+      {previewUrl && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-6xl h-[85vh] rounded-xl overflow-hidden flex flex-col">
+
+            {/* HEADER */}
+            <div className="flex justify-between items-center px-4 py-3 border-b bg-gray-50">
+              <h3 className="font-semibold text-sm truncate">{previewTitle}</h3>
+
+              <div className="flex items-center gap-4">
+                <a
+                  href={previewUrl}
+                  target="_blank"
+                  className="text-sm flex items-center gap-1"
+                >
+                  <ExternalLink size={14} /> Open
+                </a>
+
+                <button onClick={() => setPreviewUrl(null)}>✕</button>
+              </div>
+            </div>
+
+            {/* PDF */}
+            <iframe src={previewUrl} className="w-full h-full" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-/* Sidebar Component */
-function SidebarItem({
-  icon,
-  label,
-  active,
-  onClick,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-  onClick?: () => void;
-}) {
+/* NOTICE CARD */
+function NoticeCard({ notice, setPreviewUrl, setPreviewTitle, pinned = false }: any) {
   return (
-    <div
-      onClick={onClick}
-      className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition ${
-        active
-          ? "bg-gray-200 text-[#4b0004] font-bold"
-          : "text-gray-600 hover:bg-gray-100"
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
+    <div className="bg-white p-5 rounded-xl border hover:shadow-sm">
+
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="font-semibold text-lg flex items-center gap-2">
+          {pinned && <Pin size={16} />}
+          {notice.title}
+        </h3>
+
+        <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+          {notice.category}
+        </span>
+      </div>
+
+      <p className="text-sm text-gray-500 flex items-center gap-2 mb-2">
+        <Calendar size={14} /> {notice.date}
+      </p>
+
+      <p className="text-gray-700 mb-3 line-clamp-3">
+        {notice.description || "No description available."}
+      </p>
+
+      {notice.url && (
+        <div className="flex gap-4 text-sm font-semibold">
+          <button
+            onClick={() => {
+              setPreviewUrl(notice.url);
+              setPreviewTitle(notice.title);
+            }}
+            className="text-[#465f88] flex items-center gap-2"
+          >
+            <Eye size={16} /> Preview
+          </button>
+
+          <a
+            href={notice.url}
+            target="_blank"
+            className="text-[#4b0004] flex items-center gap-2"
+          >
+            <Download size={16} /> Download
+          </a>
+        </div>
+      )}
     </div>
+  );
+}
+
+/* TAB */
+function TabBtn({ children, active, onClick }: any) {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-5 py-2 text-sm rounded-full ${active ? "bg-[#4b0004] text-white" : "bg-gray-200"
+        }`}
+    >
+      {children}
+    </button>
   );
 }

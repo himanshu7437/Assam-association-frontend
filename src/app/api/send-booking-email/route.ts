@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       { status: 200 }
     );
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[POST /api/send-booking-email] - Critical error:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },

@@ -1,167 +1,289 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import sectionImg from "../../public/images/section-home.jpeg";
+import sectionImg from "../../public/images/section-home2.png";
 import logo from "../../public/images/AAD_LOGO red.svg";
-import pillar1 from "../../public/images/pillar-1.jpeg";
-import pillar2 from "../../public/images/pillar-2.jpeg";
+import pillar1 from "../../public/images/pillar-1-2.png";
+import pillar2 from "../../public/images/pillar-2-2.png";
 import pillar3 from "../../public/images/pillar-3.jpeg";
+import { getPublicNotices } from "@/lib/api/notices";
 
 export default function Home() {
-  const notices = [
-    {
-      date: "24 Oct",
-      title: "Annual General Meeting 2024",
-      desc: "Notice regarding the upcoming AGM scheduled at Sankaradeva Bhawan Auditorium.",
-    },
-    {
-      date: "12 Oct",
-      title: "Bhogali Bihu Celebrations 2025",
-      desc: "Volunteer registration and stall booking now open for the upcoming harvest festival celebrations.",
-    },
-    {
-      date: "05 Oct",
-      title: "New Membership Drive",
-      desc: "Inviting life membership applications for Assamese residents and students in Delhi-NCR.",
-    },
-  ];
+
+  const [showModal, setShowModal] = useState(false);
+  const [notices, setNotices] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const lastShown = localStorage.getItem("aad_modal_last_shown");
+    const today = new Date().toDateString();
+
+    if (lastShown !== today) {
+      const timer = setTimeout(() => {
+        setShowModal(true);
+        localStorage.setItem("aad_modal_last_shown", today);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  useEffect(() => {
+    async function fetchNotices() {
+      try {
+        const data = await getPublicNotices();
+        setNotices(data);
+      } catch (error) {
+        console.error("Failed to fetch notices:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchNotices();
+  }, []);
+
+
+
+  const getDisplayNotices = (allNotices: any[]) => {
+    const today = new Date();
+
+    // Normalize today (remove time)
+    today.setHours(0, 0, 0, 0);
+
+    const upcoming = allNotices.filter((n) => {
+      const d = new Date(n.date);
+      return d >= today;
+    });
+
+    const sortedUpcoming = [...upcoming].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    // If upcoming exists → take first 3
+    if (sortedUpcoming.length > 0) {
+      return sortedUpcoming.slice(0, 3);
+    }
+
+    // Else fallback to latest past 3
+    const past = [...allNotices].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    return past.slice(0, 3);
+  };
+
+  const displayNotices = React.useMemo(() => {
+    return getDisplayNotices(notices);
+  }, [notices]);
+
+  useEffect(() => {
+    if (!showModal || displayNotices.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % displayNotices.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [showModal, displayNotices]);
+
+  const formatDate = (dateValue: any) => {
+    if (!dateValue) return "";
+
+    const date = new Date(dateValue);
+
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+    });
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % displayNotices.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? displayNotices.length - 1 : prev - 1
+    );
+  };
+
+  useEffect(() => {
+    if (currentIndex >= displayNotices.length) {
+      setCurrentIndex(0);
+    }
+  }, [displayNotices]);
 
   return (
-    <div className="flex flex-col bg-[#F9F7F2] text-[#1b1c19] relative">
-
-      {/* Wrap content above pattern */}
+    <div className="flex flex-col bg-[#fbf9f4] text-[#1b1c19] relative">
       <div className="relative z-10">
 
-        {/* HERO */}
-        <section className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-80px)] items-center">
+        {/* HERO (UNCHANGED) */}
+        <section className="grid grid-cols-1 md:grid-cols-[38%_62%] min-h-[calc(100vh-4rem)] items-center">
 
-          {/* LEFT SIDE */}
-          <div className="flex items-center justify-center p-6 md:p-12 lg:p-16">
-            <div className="max-w-lg">
+          {/* LEFT */}
+          <div className="flex items-center h-full px-6 md:pl-20 md:pr-8 lg:pl-28 lg:pr-12 xl:pl-36 xl:pr-16 py-10 bg-[#fbf9f4]">
 
-              {/* LOGO */}
+            <div className="max-w-xl w-full">
+
+              {/* BIG LOGO */}
               <Image
                 src={logo}
                 alt="AAD Logo"
-                width={170}
-                height={170}
-                className="mb-5 text-white"
-                style={{ height: 'auto' }}
+                width={240}
+                height={240}
+                className="mb-4"
+                style={{
+                  width: "240px",
+                  height: "auto",
+                  filter: "hue-rotate(220deg) brightness(1.2) saturate(1.5)",
+                }}
                 priority
               />
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#4b0004] mb-5 font-serif leading-tight">
-                Assam Association Delhi
+              {/* BIG HEADING */}
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-[#4b0004] mb-3 font-serif leading-[1.05]">
+                Assam <br />
+                Association <br />
+                Delhi
               </h1>
 
-              <p className="text-xl md:text-2xl text-[#465f88] mb-8 font-serif">
+              {/* SUBTITLE */}
+              <p className="text-lg md:text-xl text-[#465f88] mb-2 font-serif font-medium">
                 Preserving Heritage, Fostering Community in Delhi
               </p>
 
+              {/* SMALLER BUTTON */}
               <Link
                 href="/about"
-                className="bg-[#B5824C] text-white px-8 py-3 rounded text-base font-semibold hover:scale-105 transition inline-block"
+                className="bg-[#B5824C] text-white px-6 py-2.5 rounded text-sm font-semibold hover:scale-105 transition shadow-sm inline-block"
               >
                 Explore Our Legacy
               </Link>
+
             </div>
           </div>
 
-          {/* RIGHT SIDE → FIXED PILLARS */}
-          <div className="flex justify-center items-center gap-4 px-6 md:px-10 h-[580px]">
-
-            {/* PILLAR 1 */}
-            <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar1} alt="pillar1" fill className="object-cover" sizes="(max-width: 768px) 33vw, 25vw" />
+          <div className="flex gap-3 px-3 md:px-4 h-[220px] md:h-full">
+            <div className="relative w-[34%] h-full rounded-2xl overflow-hidden shadow-xl">
+              <Image src={pillar1} alt="pillar1" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
             </div>
 
-            {/* PILLAR 2 */}
-            <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar2} alt="pillar2" fill className="object-cover" sizes="(max-width: 768px) 33vw, 25vw" />
+            <div className="relative w-[32%] h-full rounded-2xl overflow-hidden shadow-xl scale-105">
+              <Image src={pillar2} alt="pillar2" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover" priority />
             </div>
 
-            {/* PILLAR 3 */}
-            <div className="relative w-1/3 h-full rounded-2xl overflow-hidden shadow-xl">
-              <Image src={pillar3} alt="pillar3" fill className="object-cover" sizes="(max-width: 768px) 33vw, 25vw" />
-            </div>
-
-          </div>
-        </section>
-
-        {/* LEGACY */}
-        <section className="py-24 bg-[#f5f3ee]">
-          <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl text-[#4b0004] mb-8 font-bold">
-                A Gateway to Assamese Culture
-              </h2>
-              <p className="text-[#44474e] text-lg mb-4">
-                Established as a cornerstone for the Assamese diaspora in Delhi, connecting heritage with modern life.
-              </p>
-              <p className="text-[#44474e] text-lg">
-                We preserve language, arts, and the teachings of Srimanta Sankaradeva.
-              </p>
+            <div className="relative w-[34%] h-full rounded-2xl overflow-hidden shadow-xl">
+              <Image src={pillar3} alt="pillar3" fill sizes="(max-width: 768px) 33vw, 30vw" className="object-cover object-top" priority />
             </div>
           </div>
+
         </section>
 
         {/* NOTICES */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-8">
-            <h2 className="text-3xl font-bold text-[#465f88] mb-12">Recent Notices</h2>
+        <section className="py-20 bg-[#f5f3ee]">
+          <div className="max-w-5xl mx-auto px-6 text-center">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-[#4b0004] mb-12">
+              Recent Notices
+            </h2>
 
-            <div className="grid gap-4">
-              {notices.map((n, i) => (
-                <div key={i} className="group bg-white p-6 flex flex-col md:flex-row gap-6 rounded-lg shadow hover:bg-gray-100">
-                  <div className="font-bold text-[#465f88] min-w-[100px] border-r pr-6">
-                    {n.date}
-                  </div>
-                  <div className="flex-grow">
-                    <h3 className="font-bold text-xl group-hover:text-[#4b0004]">
-                      {n.title}
-                    </h3>
-                    <p className="text-gray-600">{n.desc}</p>
-                  </div>
+            <div className="space-y-4">
+              {loading ? (
+                <p className="text-gray-500">Loading notices...</p>
+              ) : notices.length === 0 ? (
+                <p className="text-gray-500">No notices available.</p>
+              ) : (
+                <div className="space-y-4 text-left">
+                  {displayNotices.map((n, i) => (
+                    <div
+                      key={n.id || i}
+                      className="bg-white p-6 flex flex-col md:flex-row gap-6 rounded-lg shadow hover:bg-gray-100"
+                    >
+                      <div className="font-bold text-[#465f88] min-w-[100px] border-r pr-6">
+                        {formatDate(n.date)}
+                      </div>
+
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-xl text-[#4b0004]">
+                          {n.title}
+                        </h3>
+                        <p className="text-gray-600">{n.description}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </section>
 
-        {/* HERITAGE FEATURE */}
-        <section className="py-24 bg-[#f0eee9]">
-          <div className="max-w-7xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
-            <div className="relative w-full max-w-[600px] aspect-square rounded-3xl shadow-2xl overflow-hidden">
-              <Image
-                src={sectionImg}
-                alt="Heritage Center"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-black/20"></div>
-            </div>
+        {/* GATEWAY */}
+        <section className="py-28 text-center">
+          <div className="max-w-4xl mx-auto px-6">
 
-            <div>
-              <span className="text-[#4b0004] font-bold uppercase text-sm">
-                Cultural Center
-              </span>
-              <h2 className="text-4xl font-bold mb-6">
-                The Heartbeat of the Diaspora
-              </h2>
-              <p className="text-gray-600 mb-8">
-                A spiritual and cultural hub for Assamese traditions in Delhi.
-              </p>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#4b0004] mb-6">
+              A Gateway to Assamese Culture
+            </h2>
 
-              <div className="grid grid-cols-2 gap-6">
-                <div className="border-l-4 border-[#4b0004] pl-4">
-                  <div className="font-bold text-[#465f88]">Library</div>
-                  <div className="text-sm text-gray-500">Literature collection</div>
-                </div>
-                <div className="border-l-4 border-[#4b0004] pl-4">
-                  <div className="font-bold text-[#465f88]">Auditorium</div>
-                  <div className="text-sm text-gray-500">300 seats</div>
+            <div className="w-20 h-[2px] bg-[#B5824C] mx-auto mb-10"></div>
+
+            <p className="text-lg md:text-xl text-[#44474e] leading-relaxed mb-6">
+              Assam Association Delhi stands as a cultural bridge connecting the Assamese diaspora with their roots.
+              Established with a vision to preserve identity in a fast-evolving urban landscape, the association has
+              become a home away from home for generations.
+            </p>
+
+            <p className="text-lg text-[#44474e] leading-relaxed">
+              Through festivals like Bihu, literary gatherings, and community initiatives, we celebrate the spirit of Assam
+              while fostering unity, belonging, and cultural pride among members across Delhi-NCR.
+            </p>
+
+          </div>
+        </section>
+
+        {/* VISION */}
+        <section className="py-24 bg-[#f5f3ee]">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+
+            <div className="grid md:grid-cols-2 gap-16 items-center">
+
+              <div className="relative pl-4 pb-4">
+                <div className="absolute top-0 left-0 w-full h-full border-2 border-[#B5824C] rounded-lg -z-10 translate-x-[-15px] translate-y-[-15px]"></div>
+                <div className="relative h-[500px] w-full rounded-lg overflow-hidden shadow-2xl">
+                  <Image
+                    src={sectionImg}
+                    alt="Vision"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover grayscale hover:grayscale-0 transition duration-700"
+                  />
                 </div>
               </div>
+
+              <div>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold text-[#4b0004] mb-8">
+                  Our Vision
+                </h2>
+
+                <p className="text-lg text-gray-700 mb-6 leading-relaxed border-l-4 border-[#B5824C] pl-6">
+                  We envision a vibrant, connected community where the rich tapestry of Assamese heritage thrives globally.
+                </p>
+
+                <p className="text-gray-600 mb-8">
+                  By bridging tradition and modernity, we empower future generations to carry forward our identity with pride.
+                </p>
+
+                <Link
+                  href="/about"
+                  className="text-[#4b0004] font-bold border-b-2 border-[#4b0004] pb-1 hover:text-[#B5824C] hover:border-[#B5824C] transition"
+                >
+                  Read Full Vision Statement →
+                </Link>
+              </div>
+
             </div>
           </div>
         </section>
@@ -218,7 +340,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto px-8 text-center">
             <div className="mb-10 flex justify-center">
               <div className="w-30 h-30 rounded-full border border-[#e4e2dd] flex items-center justify-center">
-                <Image src={logo} alt="logo" width={150} height={150} />
+                <Image src={logo} alt="logo" width={150} height={150} style={{ width: "150px", height: "auto" }} />
               </div>
             </div>
 
@@ -244,6 +366,103 @@ export default function Home() {
           </div>
         </section>
 
+        {showModal && displayNotices.length > 0 && (
+          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center px-4">
+
+            <div className="relative w-full max-w-5xl h-[450px] rounded-3xl overflow-hidden shadow-2xl">
+
+              {/* SLIDER */}
+              <div
+                className="flex h-full transition-transform duration-700 ease-in-out"
+                style={{
+                  transform: `translateX(-${currentIndex * 100}%)`,
+                }}
+              >
+                {displayNotices.map((n, i) => (
+                  <div key={i} className="min-w-full h-full relative">
+
+                    {/* IMAGE */}
+                    <Image
+                      src={n.thumbnailUrl || "/fallback.jpg"}
+                      alt={n.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 80vw"
+                      className="object-cover"
+                      priority
+                    />
+
+                    {/* DARK OVERLAY */}
+                    <div className="absolute inset-0 bg-black/50" />
+
+                    {/* CONTENT */}
+                    <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+
+                      <p className="text-sm text-[#f2d3a1] font-medium drop-shadow">
+                        {formatDate(n.date)}
+                      </p>
+
+                      <h2 className="text-2xl md:text-3xl font-serif font-bold mb-2 text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] leading-snug">
+                        {n.title}
+                      </h2>
+
+                      <p className="text-sm md:text-base max-w-2xl text-white/90 drop-shadow">
+                        {n.description}
+                      </p>
+
+                      {n.hasPdf && (
+                        <a
+                          href={n.pdfUrl}
+                          target="_blank"
+                          className="inline-block mt-3 text-[#f2d3a1] underline"
+                        >
+                          View Details →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* LEFT ARROW */}
+              <button
+                onClick={prevSlide}
+                className="absolute top-1/2 left-4 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/40 transition"
+              >
+                ◀
+              </button>
+
+              {/* RIGHT ARROW */}
+              <button
+                onClick={nextSlide}
+                className="absolute top-1/2 right-4 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/40 transition"
+              >
+                ▶
+              </button>
+
+              {/* DOTS */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {displayNotices.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2.5 h-2.5 rounded-full transition ${i === currentIndex
+                      ? "bg-white scale-110"
+                      : "bg-white/40"
+                      }`}
+                  />
+                ))}
+              </div>
+
+              {/* CLOSE BUTTON */}
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-white text-2xl hover:scale-110 transition"
+              >
+                ✕
+              </button>
+
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

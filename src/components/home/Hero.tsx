@@ -96,6 +96,7 @@ export default function Hero() {
                     src="https://images.unsplash.com/photo-1582650625119-c631f742982d?q=80&w=2070&auto=format&fit=crop"
                     alt="Assam Heritage"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 42vw"
                     className="object-cover grayscale-[20%] hover:scale-105 transition-transform duration-[3000ms] ease-out"
                     priority
                   />

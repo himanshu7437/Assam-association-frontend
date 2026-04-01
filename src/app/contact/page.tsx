@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { submitContactForm } from "@/lib/api/contact";
-import contactHero from "../../../public/images/footer.jpeg";
+import contactHero from "../../../public/images/contact2.png";
 import paymentBarcode from "../../../public/images/paymentBarcode.jpg";
 
 export default function ContactPage() {
@@ -52,8 +52,8 @@ export default function ContactPage() {
       await submitContactForm(formData);
       setSuccess(true);
       setFormData({ fullName: "", email: "", subject: "", message: "" });
-    } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      setError((err as Error).message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -67,17 +67,20 @@ export default function ContactPage() {
 
         {/* Background Image */}
         <div className="absolute inset-0">
-          <img
-            src={contactHero.src} // 👉 your image
+          <Image
+            src={contactHero}
             alt="Contact Background"
-            className="w-full h-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right md:object-center"
           />
         </div>
 
         {/* DARK GREEN → TRANSPARENT GRADIENT */}
         <div className="absolute inset-0 bg-gradient-to-r 
-          from-green-900/50 
-          via-green-800/50 
+          from-green-900/60 
+          via-green-900/60 
           to-transparent"
         />
 
@@ -85,19 +88,21 @@ export default function ContactPage() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cpath d=%22M30 0l30 30-30 30-30-30z%22 fill=%22%23ffffff%22 fill-opacity=%220.03%22/%3E%3C/svg%3E')]" />
 
         {/* CONTENT (ONLY TEXT ENHANCED) */}
-        <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex items-center justify-start">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
+            className="text-left max-w-2xl"
           >
-            {/* SLIGHTLY MORE BOLD */}
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight font-[Noto_Serif] drop-shadow-lg">
+            {/* HEADING */}
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 leading-tight font-[Noto_Serif] drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]">
               Get in Touch
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto font-[Inter] leading-relaxed drop-shadow">
-              We’re here to help. Reach out for bookings, membership, or general inquiries.
+            {/* SUBTEXT */}
+            <p className="text-base sm:text-lg md:text-xl text-white/95 font-[Inter] leading-relaxed drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)]">
+              Connecting the Assamese community in the heart of the national capital. We are here to listen, support, and grow together.
             </p>
           </motion.div>
         </div>
@@ -127,7 +132,8 @@ export default function ContactPage() {
                   </h4>
                   <p className="text-sm leading-relaxed">
                     Srimanta Sankaradeva Bhawan,<br />
-                    Qutab Institutional Area, New Delhi
+                    A14B, Satsang Vihar Marg, Block A,<br />
+                    Qutab Institutional Area, New Delhi - 110067
                   </p>
                 </div>
               </div>
@@ -138,7 +144,7 @@ export default function ContactPage() {
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">
                     Phone
                   </h4>
-                  <p className="text-sm">+91 11 2696 0386</p>
+                  <p className="text-sm">098713 19664</p>
                 </div>
               </div>
 
@@ -160,22 +166,22 @@ export default function ContactPage() {
                 <div className="space-y-4 text-xs uppercase tracking-widest">
                   <div className="flex justify-between border-b border-primary/10 pb-2">
                     <span>Bank</span>
-                    <span className="text-primary">SBI</span>
+                    <span className="text-primary">CANARA BANK</span>
                   </div>
 
                   <div className="flex justify-between border-b border-primary/10 pb-2">
                     <span>A/C Name</span>
-                    <span className="text-primary">AAD</span>
+                    <span className="text-primary">ASSAM ASSOCIATION CULTURAL EDUC TRUST</span>
                   </div>
 
                   <div className="flex justify-between border-b border-primary/10 pb-2">
                     <span>A/C No</span>
-                    <span className="text-primary">10245678901</span>
+                    <span className="text-primary">1484101027718</span>
                   </div>
 
                   <div className="flex justify-between">
                     <span>IFSC</span>
-                    <span className="text-primary">SBIN0001234</span>
+                    <span className="text-primary">CNRB0001484</span>
                   </div>
                 </div>
 
@@ -184,14 +190,14 @@ export default function ContactPage() {
                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-3 text-center">
                     Scan to Pay
                   </p>
-                  <div className="mx-auto flex justify-center">
+                  <div className="mx-auto flex justify-center w-[160px]">
                     <Image
                       src={paymentBarcode}
                       alt="Payment Barcode"
                       width={160}
                       height={160}
                       className="object-contain"
-                      style={{ height: 'auto' }}
+                      style={{ width: '100%', height: 'auto' }}
                       priority
                     />
                   </div>

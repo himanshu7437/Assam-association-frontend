@@ -1,4 +1,4 @@
-export async function submitContactForm(data: any) {
+export async function submitContactForm(data: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
   const res = await fetch("/api/contact", {
     method: "POST",
     headers: {

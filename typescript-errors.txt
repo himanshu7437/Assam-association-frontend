@@ -1,0 +1,4 @@
+﻿src/app/publications/page.tsx(31,50): error TS2339: Property 'type' does not exist on type 'DocumentItem'.
+src/app/publications/page.tsx(32,48): error TS2339: Property 'type' does not exist on type 'DocumentItem'.
+src/app/publications/page.tsx(169,32): error TS2339: Property 'title' does not exist on type 'DocumentItem'.
+src/app/publications/page.tsx(173,32): error TS2339: Property 'description' does not exist on type 'DocumentItem'.

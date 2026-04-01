@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import footerBg from "../../../public/images/footer.jpeg";
+import footerBg from "../../../public/images/footer2.png";
 
   export default function Footer() {
     return (
@@ -15,15 +15,16 @@ import footerBg from "../../../public/images/footer.jpeg";
             src={footerBg}
             alt="Footer Background"
             fill
-            className="object-cover"
+            sizes="100vw"
+            className="object-cover object-left md:object-center"
           />
         </div>
 
       {/* PROFESSIONAL OVERLAY (FIXED) */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-green-900/50 to-green-600/50 backdrop-blur-[1px]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-900/60 to-green-900/60 backdrop-blur-[0.1px]" />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-6 py-16">
+      <div className="relative max-w-7xl mx-auto px-6 py-14 md:py-28">
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
 

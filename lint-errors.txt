@@ -1,0 +1,106 @@
+﻿
+> assam-frontend@0.1.0 lint
+> eslint
+
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\__tests__\email.test.ts
+  33:24  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\api\send-booking-email\route.ts
+  49:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\contact\page.tsx
+  55:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\facilities\[id]\page.tsx
+  4:8  warning  'Image' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\facilities\page.tsx
+  208:30  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\gallery\page.tsx
+  61:21  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\membership\page.tsx
+  60:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\notices\page.tsx
+   43:6   warning  React Hook useEffect has missing dependencies: 'documents.length' and 'notices.length'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  252:81  error    Unexpected any. Specify a different type                                                                                                    @typescript-eslint/no-explicit-any
+  301:48  error    Unexpected any. Specify a different type                                                                                                    @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\page.tsx
+   16:42   error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+   51:42   error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+   93:34   error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+  118:6    warning  React Hook useEffect has a missing dependency: 'currentIndex'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  350:19   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                  react/no-unescaped-entities
+  350:67   error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                  react/no-unescaped-entities
+  350:160  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                  react/no-unescaped-entities
+  359:19   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                  react/no-unescaped-entities
+  359:133  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                  react/no-unescaped-entities
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\app\publications\page.tsx
+    4:8   warning  'Image' is defined but never used         @typescript-eslint/no-unused-vars
+    9:10  warning  'cn' is defined but never used            @typescript-eslint/no-unused-vars
+   34:51  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:62  error    Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\about\VisionMission.tsx
+  77:43  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\booking\BookingForm.tsx
+  131:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\gallery\AlbumCard.tsx
+  14:9  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\gallery\GalleryGrid.tsx
+  10:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\home\AboutPreview.tsx
+   8:10  warning  'Button' is defined but never used                                                                                   @typescript-eslint/no-unused-vars
+   8:18  warning  'buttonVariants' is defined but never used                                                                           @typescript-eslint/no-unused-vars
+  46:15  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                      react/no-unescaped-entities
+  47:66  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                      react/no-unescaped-entities
+  79:20  error    Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\home\Hero.tsx
+  7:10  warning  'Button' is defined but never used          @typescript-eslint/no-unused-vars
+  7:18  warning  'buttonVariants' is defined but never used  @typescript-eslint/no-unused-vars
+  8:10  warning  'ChevronRight' is defined but never used    @typescript-eslint/no-unused-vars
+  8:24  warning  'Landmark' is defined but never used        @typescript-eslint/no-unused-vars
+  9:10  warning  'cn' is defined but never used              @typescript-eslint/no-unused-vars
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\home\LatestNotices.tsx
+  6:10  warning  'Bell' is defined but never used            @typescript-eslint/no-unused-vars
+  6:16  warning  'Calendar' is defined but never used        @typescript-eslint/no-unused-vars
+  8:10  warning  'buttonVariants' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\components\services\FacilityCard.tsx
+   4:8   warning  'Image' is defined but never used           @typescript-eslint/no-unused-vars
+   6:10  warning  'Bed' is defined but never used             @typescript-eslint/no-unused-vars
+   6:15  warning  'Users' is defined but never used           @typescript-eslint/no-unused-vars
+   6:22  warning  'BookOpen' is defined but never used        @typescript-eslint/no-unused-vars
+   6:32  warning  'Coffee' is defined but never used          @typescript-eslint/no-unused-vars
+   7:10  warning  'Badge' is defined but never used           @typescript-eslint/no-unused-vars
+   8:10  warning  'Button' is defined but never used          @typescript-eslint/no-unused-vars
+   8:18  warning  'buttonVariants' is defined but never used  @typescript-eslint/no-unused-vars
+  10:10  warning  'cn' is defined but never used              @typescript-eslint/no-unused-vars
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\lib\api\contact.ts
+  1:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\lib\api\membership.ts
+  1:50  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\lib\email\sendBookingEmails.ts
+  73:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\mrp91\OneDrive\Desktop\Assam-frontend\src\types\index.ts
+  44:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  99:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+Γ£û 55 problems (28 errors, 27 warnings)
+

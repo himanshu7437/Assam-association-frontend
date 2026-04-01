@@ -74,6 +74,7 @@ export default function Committee() {
                     src={member.image || "/images/placeholder-user.jpg"}
                     alt={member.name}
                     fill
+                    sizes="(max-width: 768px) 100px, 128px"
                     className="object-cover rounded-2xl border-4 border-[#eae8e3] group-hover:border-[#4b0004]/20 transition-colors"
                   />
                 </div>

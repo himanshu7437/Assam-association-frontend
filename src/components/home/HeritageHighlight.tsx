@@ -68,6 +68,7 @@ export default function HeritageHighlight() {
                 src="https://images.unsplash.com/photo-1626082896492-766af4eb6501?q=80&w=2070&auto=format&fit=crop"
                 alt="Shankaradeva Bhawan Editorial"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover group-hover:scale-110 transition-transform duration-[3000ms]"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-secondary/40 to-transparent mix-blend-multiply" />
