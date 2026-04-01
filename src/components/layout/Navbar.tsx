@@ -54,7 +54,7 @@ export default function Navbar() {
 
           {/* ✅ TABLET → AAD */}
           <span className="hidden md:block lg:hidden font-[Noto_Serif] text-lg font-bold text-white">
-            AAD
+            Assam Association Delhi
           </span>
 
           {/* ✅ DESKTOP → FULL */}
