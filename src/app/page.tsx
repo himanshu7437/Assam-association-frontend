@@ -451,7 +451,7 @@ export default function Home() {
               {/* LEFT ARROW */}
               <button
                 onClick={prevSlide}
-                className="absolute top-1/2 left-4 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/40 transition"
+                className="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/40 transition z-20"
               >
                 ◀
               </button>
@@ -459,7 +459,7 @@ export default function Home() {
               {/* RIGHT ARROW */}
               <button
                 onClick={nextSlide}
-                className="absolute top-1/2 right-4 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/40 transition"
+                className="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur text-white hover:bg-white/40 transition z-20"
               >
                 ▶
               </button>
