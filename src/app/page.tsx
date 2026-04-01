@@ -4,6 +4,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getPublicNotices } from "@/lib/api/notices";
+import sectionImg from "../../public/images/section-home2.png"
+import pillar1 from "../../public/images/pillar-1-2.png"
+import pillar2 from "../../public/images/pillar-2-2.png"
+import pillar3 from "../../public/images/pillar-3-2.png"
 
 export default function Home() {
 
@@ -119,90 +123,90 @@ export default function Home() {
         {/* HERO (UNCHANGED) */}
         <section className="flex justify-center bg-[#fbf9f4]">
 
-  {/* CONTAINER CONTROL */}
-  <div className="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-[minmax(420px,42%)_1fr] min-h-[100dvh]">
+          {/* CONTAINER CONTROL */}
+          <div className="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-[minmax(420px,42%)_1fr] min-h-[100dvh]">
 
-    {/* LEFT */}
-    <div className="flex items-center px-6 sm:px-10 lg:px-16 xl:px-24 py-12">
+            {/* LEFT */}
+            <div className="flex items-center px-6 sm:px-10 lg:px-16 xl:px-24 py-12">
 
-      <div className="max-w-xl w-full">
+              <div className="max-w-xl w-full">
 
-        {/* LOGO */}
-        <Image
-          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"}
-          alt="AAD Logo"
-          width={200}
-          height={200}
-          className="mb-5 w-[180px] sm:w-[200px] md:w-[220px] h-auto"
-          style={{
-            filter: "hue-rotate(220deg) brightness(1.2) saturate(1.5)",
-          }}
-          priority
-        />
+                {/* LOGO */}
+                <Image
+                  src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053126/AAD_LOGO_red_qwrjb9.svg"}
+                  alt="AAD Logo"
+                  width={200}
+                  height={200}
+                  className="mb-5 w-[180px] sm:w-[200px] md:w-[220px] h-auto"
+                  style={{
+                    filter: "hue-rotate(220deg) brightness(1.2) saturate(1.5)",
+                  }}
+                  priority
+                />
 
-        {/* HEADING */}
-        <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#4b0004] mb-4 font-serif leading-tight">
-          Assam <br />
-          Association <br />
-          Delhi
-        </h1>
+                {/* HEADING */}
+                <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-[#4b0004] mb-4 font-serif leading-tight">
+                  Assam <br />
+                  Association <br />
+                  Delhi
+                </h1>
 
-        {/* SUBTITLE */}
-        <p className="text-lg sm:text-xl text-[#465f88] mb-6 font-serif font-medium">
-          Preserving Heritage, Fostering Community in Delhi
-        </p>
+                {/* SUBTITLE */}
+                <p className="text-lg sm:text-xl text-[#465f88] mb-6 font-serif font-medium">
+                  Preserving Heritage, Fostering Community in Delhi
+                </p>
 
-        {/* BUTTON */}
-        <Link
-          href="/about"
-          className="bg-[#B5824C] text-white px-6 py-3 rounded text-base font-semibold hover:scale-105 transition shadow-sm inline-block"
-        >
-          Explore Our Legacy
-        </Link>
+                {/* BUTTON */}
+                <Link
+                  href="/about"
+                  className="bg-[#B5824C] text-white px-6 py-3 rounded text-base font-semibold hover:scale-105 transition shadow-sm inline-block"
+                >
+                  Explore Our Legacy
+                </Link>
 
-      </div>
-    </div>
+              </div>
+            </div>
 
-    {/* RIGHT - PILLARS */}
-    <div className="flex gap-2 px-2 sm:px-3 h-[260px] sm:h-[320px] md:h-[420px] lg:h-auto max-h-[900px]">
+            {/* RIGHT - PILLARS */}
+            <div className="flex gap-2 px-2 sm:px-3 h-[260px] sm:h-[320px] md:h-[420px] lg:h-auto max-h-[900px]">
 
-      <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg">
-        <Image
-          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-1-2_qz6tlv.png"}
-          alt="pillar1"
-          fill
-          className="object-cover"
-          sizes="33vw"
-          priority
-        />
-      </div>
+              <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={pillar1}
+                  alt="pillar1"
+                  fill
+                  className="object-cover"
+                  sizes="33vw"
+                  priority
+                />
+              </div>
 
-      <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg scale-105">
-        <Image
-          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053173/pillar-2-2_uwn2zw.png"}
-          alt="pillar2"
-          fill
-          className="object-cover"
-          sizes="33vw"
-          priority
-        />
-      </div>
+              <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg scale-105">
+                <Image
+                  src={pillar2}
+                  alt="pillar2"
+                  fill
+                  className="object-cover"
+                  sizes="33vw"
+                  priority
+                />
+              </div>
 
-      <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg">
-        <Image
-          src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053191/pillar-3-2_nfkzo4.png"}
-          alt="pillar3"
-          fill
-          className="object-cover object-top"
-          sizes="33vw"
-          priority
-        />
-      </div>
+              <div className="relative w-1/3 h-full rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={pillar3}
+                  alt="pillar3"
+                  fill
+                  className="object-cover object-top"
+                  sizes="33vw"
+                  priority
+                />
+              </div>
 
-    </div>
+            </div>
 
-  </div>
-</section>
+          </div>
+        </section>
 
         {/* NOTICES */}
         <section className="py-20 bg-[#f5f3ee]">
@@ -275,7 +279,7 @@ export default function Home() {
                 <div className="absolute top-0 left-0 w-full h-full border-2 border-[#B5824C] rounded-lg -z-10 translate-x-[-15px] translate-y-[-15px]"></div>
                 <div className="relative h-[500px] w-full rounded-lg overflow-hidden shadow-2xl">
                   <Image
-                    src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775052791/section-home2_obkbuq.png"}
+                    src={sectionImg}
                     alt="Vision"
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
