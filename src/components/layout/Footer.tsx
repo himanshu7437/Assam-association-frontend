@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import footerBg from "../../../public/images/footer2.png";
+import footerBg from "../../../public/images/footer2-Photoroom.png";
 
 export default function Footer() {
   return (

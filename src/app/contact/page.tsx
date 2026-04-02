@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { submitContactForm } from "@/lib/api/contact";
+import contactBg from "../../../public/images/contact2-Photoroom.png";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -66,7 +67,7 @@ export default function ContactPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src={"https://res.cloudinary.com/disniu3hn/image/upload/v1775053162/contact2_vcebel.png"}
+            src={contactBg}
             alt="Contact Background"
             fill
             priority
