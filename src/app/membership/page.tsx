@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle, Download, FileUp, Paperclip } from "lucide-react";
 import { submitMembershipForm } from "@/lib/api/membership";
 import { motion, AnimatePresence } from "framer-motion";
+import { uploadToCloudinary } from "@/lib/upload";
+import Link from "next/link";
 
 export default function MembershipPage() {
   const [formData, setFormData] = useState({
@@ -12,8 +14,10 @@ export default function MembershipPage() {
     phone: "",
     occupation: "",
     address: "",
-    membershipType: "general",
+    membershipFormUrl: "",
   });
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,10 +31,41 @@ export default function MembershipPage() {
     if (error) setError(null);
   };
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validation
+    const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
+    if (!allowedTypes.includes(file.type)) {
+      setError("Please upload a PDF, JPG, or PNG file.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("File size should be less than 5MB.");
+      return;
+    }
+
+    setIsUploading(true);
+    setError(null);
+
+    try {
+      const url = await uploadToCloudinary(file);
+      setFormData(prev => ({ ...prev, membershipFormUrl: url }));
+      setUploadedFileName(file.name);
+    } catch (err: any) {
+      setError(err.message || "Failed to upload file. Please try again.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const validate = () => {
     if (!formData.fullName.trim()) return "Full name is required";
     if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) return "Valid email is required";
     if (!formData.phone.trim()) return "Phone number is required";
+    if (!formData.membershipFormUrl) return "Please upload the filled membership form";
     return null;
   };
 
@@ -55,8 +90,9 @@ export default function MembershipPage() {
         phone: "",
         occupation: "",
         address: "",
-        membershipType: "general",
+        membershipFormUrl: "",
       });
+      setUploadedFileName(null);
     } catch (err: unknown) {
       setError((err as Error).message || "Something went wrong. Please try again.");
     } finally {
@@ -116,16 +152,34 @@ export default function MembershipPage() {
             ))}
           </div>
 
-          <div className="mt-12">
-            <h3 className="text-xl font-semibold mb-4 text-[#465f88]">
-              Membership Types
+          <div className="mt-12 p-6 bg-[#4b0004]/5 rounded-xl border border-[#4b0004]/10">
+            <h3 className="text-xl font-serif font-bold text-[#4b0004] mb-3">
+              Application Steps
             </h3>
-
-            <div className="space-y-3 text-sm text-[#44474e]">
-              <p><strong>General:</strong> Open for all community members</p>
-              <p><strong>Life:</strong> One-time membership for lifetime access</p>
-              <p><strong>Student:</strong> Discounted membership for students</p>
-            </div>
+            <ol className="space-y-4 text-[#44474e]">
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#4b0004] text-white flex items-center justify-center text-xs font-bold">1</span>
+                <div>
+                  <strong>Download Form:</strong> Get the membership form from our documents section.
+                  <div className="mt-2">
+                    <Link 
+                      href="/notices" 
+                      className="inline-flex items-center gap-2 text-sm font-bold text-[#4b0004] hover:underline"
+                    >
+                      <Download size={16} /> Go to Documents Page
+                    </Link>
+                  </div>
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#4b0004] text-white flex items-center justify-center text-xs font-bold">2</span>
+                <p><strong>Fill Offline:</strong> Print and fill the form with your details and signature.</p>
+              </li>
+              <li className="flex gap-3">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#4b0004] text-white flex items-center justify-center text-xs font-bold">3</span>
+                <p><strong>Upload & Submit:</strong> Upload the scanned copy (PDF/Image) here along with your basic info.</p>
+              </li>
+            </ol>
           </div>
         </div>
 
@@ -242,32 +296,68 @@ export default function MembershipPage() {
               />
             </div>
 
-            {/* MEMBERSHIP TYPE */}
-            <div>
-              <label className="block text-sm mb-2 font-medium">
-                Membership Type
+            {/* FILE UPLOAD */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium">
+                Upload Filled Membership Form <span className="text-red-500">*</span>
               </label>
-              <select
-                name="membershipType"
-                value={formData.membershipType}
-                onChange={handleChange}
-                className="w-full border border-[#e4e2dd] px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#4b0004]"
-                disabled={loading}
-              >
-                <option value="general">General</option>
-                <option value="life">Life</option>
-                <option value="student">Student</option>
-              </select>
+              
+              <div className={`relative border-2 border-dashed rounded-lg p-6 transition-all ${
+                formData.membershipFormUrl 
+                ? "border-green-500 bg-green-50" 
+                : "border-[#e4e2dd] hover:border-[#4b0004] bg-gray-50"
+              }`}>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  accept=".pdf, .jpg, .jpeg, .png"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                  disabled={loading || isUploading}
+                />
+                
+                <div className="flex flex-col items-center justify-center text-center gap-2">
+                  {isUploading ? (
+                    <>
+                      <Loader2 size={32} className="animate-spin text-[#4b0004]" />
+                      <p className="text-sm font-medium text-gray-600">Uploading your form...</p>
+                    </>
+                  ) : formData.membershipFormUrl ? (
+                    <>
+                      <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                        <CheckCircle2 size={24} />
+                      </div>
+                      <p className="text-sm font-medium text-green-700">Form uploaded successfully!</p>
+                      <p className="text-xs text-green-600 truncate max-w-full px-4">
+                        {uploadedFileName || "membership-form.pdf"}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-10 h-10 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center">
+                        <FileUp size={24} />
+                      </div>
+                      <p className="text-sm font-medium text-gray-600">
+                        Click or drag scanned form here
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        PDF, JPG or PNG (Max 5MB)
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* SUBMIT */}
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || isUploading}
               className="w-full bg-[#4b0004] text-white py-4 rounded-md font-semibold hover:opacity-90 transition disabled:opacity-70 flex items-center justify-center gap-2"
             >
               {loading ? (
-                <>Submitting... <Loader2 size={18} className="animate-spin" /></>
+                <>Submitting Application... <Loader2 size={18} className="animate-spin" /></>
+              ) : isUploading ? (
+                <>Waiting for upload... <Loader2 size={18} className="animate-spin" /></>
               ) : (
                 "Submit Application"
               )}

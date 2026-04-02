@@ -10,7 +10,6 @@ export async function POST(request: Request) {
     await addDoc(collection(db, "membership_applications"), {
       ...body,
       createdAt: serverTimestamp(),
-      status: "pending"
     });
 
     return NextResponse.json({ 

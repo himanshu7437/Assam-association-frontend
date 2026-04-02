@@ -196,6 +196,7 @@ export default function ContactPage() {
                       width={160}
                       height={160}
                       className="object-contain"
+                      style={{ width: "160px", height: "auto" }}
                       priority
                       unoptimized
                     />
