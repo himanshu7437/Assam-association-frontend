@@ -7,12 +7,17 @@ interface EmailPayload {
   userEmail: string;
   userName: string;
   facility: string;
-  date: string;
+  checkIn: string;
+  checkOut: string;
 }
 
 export async function sendBookingEmails(payload: EmailPayload) {
   try {
-    const { userEmail, userName, facility, date } = payload;
+    const { userEmail, userName, facility, checkIn, checkOut } = payload;
+    
+    const dateDisplay = checkIn === checkOut 
+      ? `<strong>Date:</strong> ${checkIn}`
+      : `<strong>Check-in:</strong> ${checkIn}<br/><strong>Check-out:</strong> ${checkOut}`;
 
     // 1. Send User Confirmation
     const userEmailPromise = resend.emails.send({
@@ -27,7 +32,7 @@ export async function sendBookingEmails(payload: EmailPayload) {
           
           <div style="background-color: #fbf9f4; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4b0004;">
             <p style="margin: 5px 0;"><strong>Facility:</strong> ${facility}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${date}</p>
+            <p style="margin: 5px 0;">${dateDisplay}</p>
             <p style="margin: 5px 0;"><strong>Status:</strong> <span style="background-color: #ffeb3b; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; color: #333;">Pending</span></p>
           </div>
           
@@ -51,7 +56,7 @@ export async function sendBookingEmails(payload: EmailPayload) {
             <p style="margin: 5px 0;"><strong>User Name:</strong> ${userName}</p>
             <p style="margin: 5px 0;"><strong>User Email:</strong> ${userEmail}</p>
             <p style="margin: 5px 0;"><strong>Facility:</strong> ${facility}</p>
-            <p style="margin: 5px 0;"><strong>Date:</strong> ${date}</p>
+            <p style="margin: 5px 0;">${dateDisplay}</p>
           </div>
           
           <p>Please log in to the admin dashboard to proceed with approving or rejecting this request.</p>

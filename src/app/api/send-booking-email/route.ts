@@ -17,20 +17,23 @@ export async function POST(req: Request) {
     
     const payload = result.data;
 
-    // 2. Format Date securely and Call Email Service
-    const dateObj = new Date(payload.date);
-    const formattedDate = dateObj.toLocaleDateString("en-US", {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long', 
-      day: 'numeric'
-    });
+    // 2. Format Dates securely and Call Email Service
+    const formatDate = (d: string | Date) => {
+      const dateObj = new Date(d);
+      return dateObj.toLocaleDateString("en-US", {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long', 
+        day: 'numeric'
+      });
+    };
 
     const emailResult = await sendBookingEmails({
       userEmail: payload.userEmail,
       userName: payload.userName,
       facility: payload.facility,
-      date: formattedDate,
+      checkIn: formatDate(payload.checkIn),
+      checkOut: formatDate(payload.checkOut),
     });
 
     if (!emailResult.success) {

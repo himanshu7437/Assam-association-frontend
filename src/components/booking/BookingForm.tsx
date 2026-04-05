@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CalendarIcon, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
-import { requestBooking } from "@/lib/api/bookings";
+import { requestBooking, checkAvailability } from "@/lib/api/bookings";
 import { getFacilities } from "@/lib/api/services";
 import { Facility } from "@/types";
 
@@ -36,15 +36,25 @@ const bookingSchema = z.object({
   email: z.string().email("Invalid email address."),
   phone: z.string().regex(/^\+?[0-9]{10,12}$/, "Invalid phone number."),
   facilityId: z.string().min(1, "Please select a facility."),
-  facilityName: z.string(),
+  facility: z.string(),
   type: z.string(),
   room: z.string().optional(),
   duration: z.string().optional(),
-  date: z.any().refine((val) => val instanceof Date, {
-    message: "A booking date is required.",
+  checkIn: z.date({
+    message: "Check-in date is required.",
+  }),
+  checkOut: z.date({
+    message: "Check-out date is required.",
   }),
   message: z.string().optional(),
 }).superRefine((data, ctx) => {
+  if (data.checkOut < data.checkIn) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Check-out cannot be before check-in.",
+      path: ["checkOut"],
+    });
+  }
   if (data.type === "accommodation" && !data.room) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
@@ -70,6 +80,8 @@ export default function BookingForm() {
 
   const [facilities, setFacilities] = useState<Facility[]>([]);
   const [isLoadingFacilities, setIsLoadingFacilities] = useState(true);
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
+  const [availabilityMessage, setAvailabilityMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   useEffect(() => {
     async function fetchFacilities() {
@@ -92,7 +104,7 @@ export default function BookingForm() {
       email: "",
       phone: "",
       facilityId: "",
-      facilityName: "",
+      facility: "",
       type: "simple",
       room: "",
       duration: "",
@@ -102,6 +114,33 @@ export default function BookingForm() {
 
   const selectedFacilityId = form.watch("facilityId");
   const selectedFacilityObj = facilities.find(f => f.id === selectedFacilityId);
+  const checkIn = form.watch("checkIn");
+  const checkOut = form.watch("checkOut");
+
+  // Availability Check Effect
+  useEffect(() => {
+    async function verify() {
+      if (selectedFacilityId && checkIn && checkOut && checkOut >= checkIn) {
+        setIsCheckingAvailability(true);
+        setAvailabilityMessage(null);
+        try {
+          const res = await checkAvailability(selectedFacilityId, checkIn, checkOut);
+          if (res.available) {
+            setAvailabilityMessage({ type: 'success', text: "Dates are available for booking." });
+          } else {
+            setAvailabilityMessage({ type: 'error', text: res.message || "Dates not available." });
+          }
+        } catch (e) {
+          setAvailabilityMessage({ type: 'error', text: "Could not verify availability at this time." });
+        } finally {
+          setIsCheckingAvailability(false);
+        }
+      } else {
+        setAvailabilityMessage(null);
+      }
+    }
+    verify();
+  }, [selectedFacilityId, checkIn, checkOut]);
 
   // Handle facility change to clear dependent fields and update hidden state
   const handleFacilityChange = (val: string | null) => {
@@ -111,7 +150,7 @@ export default function BookingForm() {
     if (!facility) return;
     
     form.setValue("facilityId", facility.id);
-    form.setValue("facilityName", facility.name);
+    form.setValue("facility", facility.name);
     form.setValue("type", facility.type);
     
     // reset dependents
@@ -121,6 +160,12 @@ export default function BookingForm() {
   };
 
   const onSubmit = async (values: BookingFormValues) => {
+    // Final check before submission
+    if (availabilityMessage?.type === 'error') {
+       setError("Please select available dates before submitting.");
+       return;
+    }
+
     setIsSubmitting(true);
     setError(null);
 
@@ -337,39 +382,92 @@ export default function BookingForm() {
           )}
         </AnimatePresence>
 
-        {/* Date */}
-        <div className="grid grid-cols-1 md:grid-cols-1 gap-8 relative z-0">
+        {/* Dates Selection */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-0">
+          {/* Check-in */}
           <div className="space-y-2">
             <Label className="text-xs font-bold uppercase tracking-widest text-foreground">
-              Booking Date
+              Check-in Date
             </Label>
-
             <Popover>
-              <PopoverTrigger className={cn("h-12 flex items-center border border-gray-300 rounded-lg px-3 bg-white focus:ring-2 focus:ring-primary/20 w-full", form.formState.errors.date && "border-red-500")}>
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {form.watch("date")
-                  ? format(form.watch("date"), "PPP")
-                  : "Pick a date"}
+              <PopoverTrigger className={cn("h-12 flex items-center border border-gray-300 rounded-lg px-3 bg-white focus:ring-2 focus:ring-primary/20 w-full", form.formState.errors.checkIn && "border-red-500")}>
+                <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                <span className={cn(!form.watch("checkIn") && "text-muted-foreground")}>
+                  {form.watch("checkIn") ? format(form.watch("checkIn"), "PPP") : "Select date"}
+                </span>
               </PopoverTrigger>
-
               <PopoverContent className="z-[9999] w-auto p-0 bg-white shadow-xl border">
                 <Calendar
                   mode="single"
-                  selected={form.watch("date")}
-                  onSelect={(date) => {
-                    if (date) form.setValue("date", date);
-                  }}
-                  disabled={(date) => date < new Date()}
+                  selected={form.watch("checkIn")}
+                  onSelect={(date) => date && form.setValue("checkIn", date, { shouldValidate: true })}
+                  disabled={(date) => date < new Date(new Date().setHours(0,0,0,0))}
+                  initialFocus
                 />
               </PopoverContent>
             </Popover>
-            {form.formState.errors.date && (
+            {form.formState.errors.checkIn && (
                <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
-                 <AlertCircle size={12} /> {form.formState.errors.date.message as string}
+                 <AlertCircle size={12} /> {form.formState.errors.checkIn.message as string}
+               </p>
+            )}
+          </div>
+
+          {/* Check-out */}
+          <div className="space-y-2">
+            <Label className="text-xs font-bold uppercase tracking-widest text-foreground">
+              Check-out Date
+            </Label>
+            <Popover>
+              <PopoverTrigger className={cn("h-12 flex items-center border border-gray-300 rounded-lg px-3 bg-white focus:ring-2 focus:ring-primary/20 w-full", form.formState.errors.checkOut && "border-red-500")}>
+                <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+                <span className={cn(!form.watch("checkOut") && "text-muted-foreground")}>
+                  {form.watch("checkOut") ? format(form.watch("checkOut"), "PPP") : "Select date"}
+                </span>
+              </PopoverTrigger>
+              <PopoverContent className="z-[9999] w-auto p-0 bg-white shadow-xl border">
+                <Calendar
+                  mode="single"
+                  selected={form.watch("checkOut")}
+                  onSelect={(date) => date && form.setValue("checkOut", date, { shouldValidate: true })}
+                  disabled={(date) => date < (form.watch("checkIn") || new Date(new Date().setHours(0,0,0,0)))}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+            {form.formState.errors.checkOut && (
+               <p className="text-xs text-red-500 flex items-center gap-1 mt-1">
+                 <AlertCircle size={12} /> {form.formState.errors.checkOut.message as string}
                </p>
             )}
           </div>
         </div>
+
+        {/* Availability Feedback */}
+        <AnimatePresence>
+          {(isCheckingAvailability || availabilityMessage) && (
+            <motion.div
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              className={cn(
+                "p-4 rounded-xl flex items-center gap-3 border text-sm font-medium transition-colors",
+                isCheckingAvailability ? "bg-blue-50 text-blue-700 border-blue-100" :
+                availabilityMessage?.type === 'success' ? "bg-green-50 text-green-700 border-green-100" :
+                "bg-red-50 text-red-700 border-red-100"
+              )}
+            >
+              {isCheckingAvailability ? (
+                <Loader2 size={18} className="animate-spin" />
+              ) : availabilityMessage?.type === 'success' ? (
+                <CheckCircle2 size={18} />
+              ) : (
+                <AlertCircle size={18} />
+              )}
+              {isCheckingAvailability ? "Checking availability for selected dates..." : availabilityMessage?.text}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Message */}
         <div className="space-y-2">
@@ -394,8 +492,8 @@ export default function BookingForm() {
         {/* BUTTON FIX */}
         <Button
           type="submit"
-          disabled={isSubmitting}
-          className="w-full h-14 rounded-full text-lg shadow-xl bg-primary text-white hover:bg-primary/90"
+          disabled={isSubmitting || isCheckingAvailability || availabilityMessage?.type === 'error'}
+          className="w-full h-14 rounded-full text-lg shadow-xl bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:grayscale transition-all"
         >
           {isSubmitting ? (
             <>

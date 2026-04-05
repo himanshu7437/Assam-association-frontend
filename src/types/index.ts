@@ -85,11 +85,12 @@ export interface BookingInput {
   email: string;
   phone: string;
   facilityId: string;
-  facilityName: string;
+  facility: string;
   type: string;
   room?: string;
   duration?: string;
-  date: Date;
+  checkIn: Date;
+  checkOut: Date;
   message?: string;
 }
 
