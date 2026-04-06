@@ -1,0 +1,4 @@
+﻿__tests__/email.test.ts(26,44): error TS2345: Argument of type '{ userEmail: string; userName: string; facility: string; date: string; }' is not assignable to parameter of type 'EmailPayload'.
+  Type '{ userEmail: string; userName: string; facility: string; date: string; }' is missing the following properties from type 'EmailPayload': checkIn, checkOut
+__tests__/email.test.ts(40,44): error TS2345: Argument of type '{ userEmail: string; userName: string; facility: string; date: string; }' is not assignable to parameter of type 'EmailPayload'.
+  Type '{ userEmail: string; userName: string; facility: string; date: string; }' is missing the following properties from type 'EmailPayload': checkIn, checkOut

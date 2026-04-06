@@ -43,7 +43,7 @@ export default function FacilityDetailsPage({ params }: { params: Promise<{ id: 
       <div className="bg-background min-h-[70vh] flex flex-col justify-center items-center space-y-6">
         <h1 className="text-4xl font-serif font-bold text-primary">Facility not found</h1>
         <p className="text-muted-foreground">The facility you are looking for does not exist or has been removed.</p>
-        <Link href="/services" className="inline-flex items-center text-secondary hover:underline font-medium">
+        <Link href="/facilities" className="inline-flex items-center text-secondary hover:underline font-medium">
           <ArrowLeft size={16} className="mr-2" /> Back to Facilities
         </Link>
       </div>

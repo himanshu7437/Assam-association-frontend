@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Loader2, CheckCircle2, AlertCircle, Download, FileUp, Paperclip } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle, Download, FileUp } from "lucide-react";
 import { submitMembershipForm } from "@/lib/api/membership";
 import { motion, AnimatePresence } from "framer-motion";
 import { uploadToCloudinary } from "@/lib/upload";
@@ -54,8 +54,9 @@ export default function MembershipPage() {
       const url = await uploadToCloudinary(file);
       setFormData(prev => ({ ...prev, membershipFormUrl: url }));
       setUploadedFileName(file.name);
-    } catch (err: any) {
-      setError(err.message || "Failed to upload file. Please try again.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      setError(errorMessage || "Failed to upload file. Please try again.");
     } finally {
       setIsUploading(false);
     }

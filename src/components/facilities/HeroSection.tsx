@@ -30,7 +30,7 @@ export default function HeroSection({ facility }: HeroSectionProps) {
       
       <div className="relative z-10 w-full pb-16 md:pb-24 pt-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full flex flex-col items-center text-center md:items-start md:text-left">
-          <Link href="/services" className="inline-flex items-center text-white/80 hover:text-white mb-8 text-sm font-medium transition group">
+          <Link href="/facilities" className="inline-flex items-center text-white/80 hover:text-white mb-8 text-sm font-medium transition group">
             <ArrowLeft size={16} className="mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Facilities
           </Link>
           

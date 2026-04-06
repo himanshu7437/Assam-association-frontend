@@ -1,4 +1,4 @@
-export async function submitMembershipForm(data: any) {
+export async function submitMembershipForm(data: Record<string, unknown>) {
   const res = await fetch("/api/membership", {
     method: "POST",
     headers: {

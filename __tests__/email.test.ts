@@ -19,7 +19,8 @@ describe("Email Service Layer", () => {
     userEmail: "test@example.com",
     userName: "Test User",
     facility: "Library",
-    date: "2026-03-27",
+    checkIn: "2026-03-27",
+    checkOut: "2026-03-28",
   };
 
   it("should send emails successfully", async () => {
@@ -30,8 +31,8 @@ describe("Email Service Layer", () => {
 
   it("should handle failures gracefully", async () => {
     // Override the mock for failure case
-    const { Resend } = require("resend");
-    Resend.mockImplementationOnce(() => ({
+    const { Resend } = await import("resend");
+    (Resend as jest.Mock).mockImplementationOnce(() => ({
       emails: {
         send: jest.fn().mockRejectedValue(new Error("Network Error")),
       },

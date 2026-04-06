@@ -114,7 +114,7 @@ export default function Home() {
     if (currentIndex >= displayNotices.length) {
       setCurrentIndex(0);
     }
-  }, [displayNotices]);
+  }, [displayNotices, currentIndex]);
 
   return (
     <div className="flex flex-col bg-[#fbf9f4] text-[#1b1c19] relative">

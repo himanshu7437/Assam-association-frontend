@@ -88,8 +88,8 @@ export default function BookingForm() {
       try {
         const data = await getFacilities();
         setFacilities(data);
-      } catch (e) {
-        console.error("Error loading facilities", e);
+      } catch {
+        // Error loading facilities
       } finally {
         setIsLoadingFacilities(false);
       }

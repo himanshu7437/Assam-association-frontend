@@ -205,7 +205,7 @@ export default function ServicesPage() {
                 </h3>
 
                 <p className="text-on-surface-variant text-sm mb-8 leading-relaxed">
-                  Whether you're hosting an event or staying with us, our team ensures
+                  Whether you&apos;re hosting an event or staying with us, our team ensures
                   a seamless booking experience tailored to your needs.
                 </p>
 
