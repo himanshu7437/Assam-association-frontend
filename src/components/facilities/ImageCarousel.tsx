@@ -1,47 +1,143 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ImageCarouselProps {
   images?: string[];
 }
 
 export default function ImageCarousel({ images }: ImageCarouselProps) {
-  if (!images || images.length === 0) {
-    return null;
-  }
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  // If there's only one image, don't use a carousel pattern, just display it.
-  if (images.length === 1) {
+  if (!images || images.length === 0) {
     return (
-      <div className="relative w-full aspect-video">
-        <Image
-          src={images[0]}
-          alt="Room image"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover"
-        />
+      <div className="w-full h-full bg-muted/20 flex items-center justify-center rounded-2xl">
+        <span className="text-muted-foreground text-sm font-medium">No images available</span>
       </div>
     );
   }
 
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? "100%" : "-100%",
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? "100%" : "-100%",
+      opacity: 0
+    })
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prev) => (prev + newDirection + images.length) % images.length);
+  };
+
   return (
-    <div className="flex w-full overflow-x-auto snap-x snap-mandatory scrollbar-hide relative group">
-      {images.map((img, idx) => (
-        <div key={idx} className="relative w-full aspect-video flex-none snap-center">
-          <Image
-            src={img}
-            alt={`Carousel image ${idx + 1}`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
-          />
-          {/* Subtle indicator of current image index out of total could be added here if desired */}
+    <div className="relative w-full h-full flex flex-col gap-4">
+      {/* MAIN CAROUSEL IMAGE AREA */}
+      <div className="relative flex-grow overflow-hidden rounded-2xl shadow-lg bg-muted/10 group h-full">
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 }
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) {
+                paginate(1);
+              } else if (swipe > swipeConfidenceThreshold) {
+                paginate(-1);
+              }
+            }}
+            className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          >
+            <Image
+              src={images[currentIndex]}
+              alt={`Room image ${currentIndex + 1}`}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover select-none"
+              priority={currentIndex === 0}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* NAVIGATION CONTROLS */}
+        {images.length > 1 && (
+          <>
+            {/* LEFT BUTTON */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                paginate(-1);
+              }}
+              className="absolute top-1/2 left-3 md:left-5 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 scale-90 group-hover:scale-100"
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={22} />
+            </button>
+
+            {/* RIGHT BUTTON */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                paginate(1);
+              }}
+              className="absolute top-1/2 right-3 md:right-5 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 scale-90 group-hover:scale-100"
+              aria-label="Next image"
+            >
+              <ChevronRight size={22} />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* DOT INDICATORS (Below image for GalleryGrid consistency) */}
+      {images.length > 1 && (
+        <div className="flex justify-center gap-2.5 pb-2">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setDirection(i > currentIndex ? 1 : -1);
+                setCurrentIndex(i);
+              }}
+              className={`cursor-pointer w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                i === currentIndex
+                  ? "bg-primary scale-125 shadow-sm"
+                  : "bg-outline-variant hover:bg-primary/50"
+              }`}
+              aria-label={`Go to image ${i + 1}`}
+            />
+          ))}
         </div>
-      ))}
-      {/* Optional Gradient fade on the right side indicating more scrollable content */}
-      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/20 to-transparent pointer-events-none group-hover:opacity-0 transition-opacity" />
+      )}
     </div>
   );
 }

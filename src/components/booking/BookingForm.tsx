@@ -294,11 +294,13 @@ export default function BookingForm() {
               </SelectTrigger>
 
               <SelectContent align="start" className="z-[9999] bg-white shadow-xl border w-[var(--radix-select-trigger-width)] max-h-64 overflow-y-auto">
-                {facilities.map((fac) => (
-                  <SelectItem key={fac.id} value={fac.id} className="cursor-pointer whitespace-normal py-2 pr-6">
-                    {fac.name}
-                  </SelectItem>
-                ))}
+                {facilities
+                  .filter((fac) => fac.name !== "Sattriya Dance")
+                  .map((fac) => (
+                    <SelectItem key={fac.id} value={fac.id} className="cursor-pointer whitespace-normal py-2 pr-6">
+                      {fac.name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
             {form.formState.errors.facilityId && (

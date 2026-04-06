@@ -1,5 +1,6 @@
 import { Room } from "@/types";
 import ImageCarousel from "./ImageCarousel";
+import { Check, Clock, Info } from "lucide-react";
 
 interface RoomCardProps {
   room: Room;
@@ -7,42 +8,83 @@ interface RoomCardProps {
 
 export default function RoomCard({ room }: RoomCardProps) {
   return (
-    <div className="bg-background border border-outline-variant/50 shadow-md rounded-[2rem] flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group">
-      
-      {/* ROOM IMAGES CAROUSEL */}
-      {room.images && room.images.length > 0 && (
-        <div className="w-full relative h-[260px] bg-muted/20">
+    <div className="bg-background border border-outline-variant/20 rounded-[2.5rem] overflow-hidden group hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 animate-in fade-in slide-in-from-bottom-4">
+      <div className="flex flex-col lg:flex-row">
+        
+        {/* ROOM IMAGES CAROUSEL - Larger area for "Complete Image" */}
+        <div className="lg:w-[55%] relative h-[300px] sm:h-[400px] lg:h-[500px] p-4 sm:p-6 lg:p-8 bg-muted/5">
           <ImageCarousel images={room.images} />
         </div>
-      )}
 
-      {/* ROOM DETAILS */}
-      <div className="p-8 md:p-10 flex flex-col flex-grow">
-        <h3 className="text-2xl font-serif font-bold text-[#1B365D] mb-4 group-hover:text-primary transition-colors">{room.name}</h3>
-        <div className="text-2xl font-bold text-secondary mb-6">
-          ₹{room.price} <span className="text-sm text-muted-foreground font-medium">/ night</span>
-        </div>
-        <p className="text-muted-foreground mb-8 flex-grow leading-relaxed text-[1.05rem]">{room.description}</p>
-        
-        <div className="space-y-4 text-sm text-on-surface-variant border-t border-outline-variant pt-6 mt-auto">
-          {room.inclusions && (
+        {/* ROOM DETAILS - Paragraph Style */}
+        <div className="lg:w-[45%] p-8 sm:p-10 lg:p-12 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-outline-variant/10">
+          <div className="space-y-8">
             <div>
-              <strong className="block text-primary mb-1">Inclusions:</strong>
-              <span className="leading-relaxed">{room.inclusions}</span>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-3xl font-serif font-bold text-primary leading-tight">
+                  {room.name}
+                </h3>
+                <div className="text-2xl font-bold text-secondary bg-secondary/5 px-4 py-1.5 rounded-full">
+                  ₹{room.price}
+                  <span className="text-xs text-muted-foreground font-medium ml-1">/ night</span>
+                </div>
+              </div>
+              <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-wrap">
+                {room.description}
+              </p>
             </div>
-          )}
-          {room.bookingPolicy && (
-            <div className="pt-2">
-              <strong className="block text-primary mb-1">Policy:</strong>
-              <span className="leading-relaxed">{room.bookingPolicy}</span>
+
+            {/* FEATURES & DETAILS */}
+            <div className="grid sm:grid-cols-2 gap-8 pt-8 border-t border-outline-variant/10">
+              {room.inclusions && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-primary">
+                    <Check size={18} className="text-secondary" />
+                    <strong className="text-sm font-bold uppercase tracking-wider">Inclusions</strong>
+                  </div>
+                  <p className="text-sm text-on-surface-variant leading-relaxed">
+                    {room.inclusions}
+                  </p>
+                </div>
+              )}
+              
+              {room.bookingPolicy && (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-primary">
+                    <Info size={18} className="text-secondary" />
+                    <strong className="text-sm font-bold uppercase tracking-wider">Policy</strong>
+                  </div>
+                  <p className="text-sm text-on-surface-variant leading-relaxed">
+                    {room.bookingPolicy}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-          {(room.checkIn || room.checkOut) && (
-            <div className="flex justify-between bg-muted/50 p-4 rounded-lg mt-4 border border-outline-variant/50">
-              {room.checkIn && <div><span className="text-xs text-muted-foreground block mb-1">Check-in</span><span className="font-semibold text-primary">{room.checkIn}</span></div>}
-              {room.checkOut && <div><span className="text-xs text-muted-foreground block mb-1">Check-out</span><span className="font-semibold text-primary">{room.checkOut}</span></div>}
-            </div>
-          )}
+
+            {/* CHECK IN/OUT */}
+            {(room.checkIn || room.checkOut) && (
+              <div className="flex gap-6 pt-4">
+                {room.checkIn && (
+                  <div className="flex items-center gap-3 bg-muted/30 px-5 py-3 rounded-2xl border border-outline-variant/10">
+                    <Clock size={16} className="text-primary/60" />
+                    <div>
+                      <span className="block text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Check-in</span>
+                      <span className="text-sm font-bold text-primary">{room.checkIn}</span>
+                    </div>
+                  </div>
+                )}
+                {room.checkOut && (
+                  <div className="flex items-center gap-3 bg-muted/30 px-5 py-3 rounded-2xl border border-outline-variant/10">
+                    <Clock size={16} className="text-primary/60" />
+                    <div>
+                      <span className="block text-[10px] text-muted-foreground uppercase font-bold tracking-widest">Check-out</span>
+                      <span className="text-sm font-bold text-primary">{room.checkOut}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

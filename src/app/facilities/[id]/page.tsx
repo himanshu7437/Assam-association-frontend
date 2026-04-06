@@ -132,11 +132,14 @@ export default function FacilityDetailsPage({ params }: { params: Promise<{ id: 
 
       {/* ACCOMMODATION (ROOMS) */}
       {facility.type === "accommodation" && facility.rooms && facility.rooms.length > 0 && (
-        <section className="py-20 bg-muted/30">
+        <section className="py-24 bg-muted/20">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <h2 className="text-3xl font-serif font-bold text-primary mb-12 text-center">Accommodation Options</h2>
+            <h2 className="text-4xl font-serif font-bold text-primary mb-20 text-center relative">
+              Accommodation Options
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-secondary rounded-full" />
+            </h2>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col gap-16 md:gap-24">
               {facility.rooms.map((room, idx) => (
                 <RoomCard key={idx} room={room} />
               ))}
@@ -201,15 +204,17 @@ export default function FacilityDetailsPage({ params }: { params: Promise<{ id: 
             Ready to reserve {facility.name}?
               </h2>
           <p className="text-on-surface-variant text-lg max-w-xl mx-auto leading-relaxed">
-            Reach out to our administration to confirm availability, clear any doubts, and finalize your booking slot.
-              </p>
-              <div className="pt-6">
-                <Link
-                  href="/booking"
+            {facility.name === "Sattriya Dance" 
+              ? "For this facility, please contact us directly"
+              : "Reach out to our administration to confirm availability, clear any doubts, and finalize your booking slot."}
+          </p>
+          <div className="pt-6">
+            <Link
+              href={facility.name === "Sattriya Dance" ? "/contact" : "/booking"}
               className="inline-block border border-primary px-10 py-4 text-xs font-bold uppercase tracking-[0.3em] text-primary hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"
-                >
-              Start Booking Process
-                </Link>
+            >
+              {facility.name === "Sattriya Dance" ? "Contact Us" : "Start Booking Process"}
+            </Link>
           </div>
         </div>
       </section>
