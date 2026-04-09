@@ -7,16 +7,16 @@ import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { GalleryItem } from "@/types";
 
 interface GalleryGridProps {
-  images?: GalleryItem[];
+  media?: GalleryItem[];
 }
 
-export default function GalleryGrid({ images }: GalleryGridProps) {
+export default function GalleryGrid({ media }: GalleryGridProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
 
-  if (!images || images.length === 0) return null;
+  if (!media || media.length === 0) return null;
 
-  const normalizedGallery = images.map((item) =>
+  const normalizedGallery = media.map((item) =>
     typeof item === "string" ? { url: item, type: "image" as const } : item
   );
 

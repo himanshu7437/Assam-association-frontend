@@ -47,14 +47,14 @@ export default function HeroSection({ facility }: HeroSectionProps) {
       </div>
 
       {/* HERO GALLERY OVERLAY */}
-      {facility.gallery && facility.gallery.length > 0 && (
+      {facility.media && facility.media.length > 0 && (
         <div className="absolute bottom-6 right-6 md:bottom-12 md:right-12 z-20">
           <a 
             href="#gallery-section" 
             className="flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full transition-all duration-300 border border-white/30 shadow-2xl"
           >
             <Images size={20} />
-            <span className="text-sm font-medium tracking-wide">Gallery ({facility.gallery.length})</span>
+            <span className="text-sm font-medium tracking-wide">Media ({facility.media.length})</span>
           </a>
         </div>
       )}

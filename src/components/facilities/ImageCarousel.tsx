@@ -8,22 +8,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { GalleryItem } from "@/types";
 
 interface ImageCarouselProps {
-  images?: GalleryItem[];
+  media?: GalleryItem[];
 }
 
-export default function ImageCarousel({ images }: ImageCarouselProps) {
+export default function ImageCarousel({ media }: ImageCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  if (!images || images.length === 0) {
+  if (!media || media.length === 0) {
     return (
       <div className="w-full h-full bg-muted/20 flex items-center justify-center rounded-2xl">
-        <span className="text-muted-foreground text-sm font-medium">No images available</span>
+        <span className="text-muted-foreground text-sm font-medium">No media available</span>
       </div>
     );
   }
 
-  const normalizedGallery = images.map((item) =>
+  const normalizedGallery = media.map((item) =>
     typeof item === "string" ? { url: item, type: "image" as const } : item
   );
 

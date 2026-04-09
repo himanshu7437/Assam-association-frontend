@@ -24,7 +24,7 @@ export interface Room {
   name: string;
   description: string;
   price: string;
-  images?: GalleryItem[];
+  media?: GalleryItem[];
   inclusions?: string;
   bookingPolicy?: string;
   checkIn?: string;
@@ -42,7 +42,7 @@ export interface Facility {
   description: string;
   image: string;
   type: FacilityType;
-  gallery?: GalleryItem[];
+  media?: GalleryItem[];
   createdAt?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   // Accommodation specific

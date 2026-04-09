@@ -127,11 +127,11 @@ export default function FacilityDetailsPage({ params }: { params: Promise<{ id: 
       </section>
 
       {/* GALLERY SECTION */}
-      {facility.gallery && facility.gallery.length > 0 && (
+      {facility.media && facility.media.length > 0 && (
         <section id="gallery-section" className="py-16 md:py-24 bg-muted/10 border-t border-outline-variant/30">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <h2 className="text-3xl font-serif font-bold text-primary mb-12 text-center">Facility Gallery</h2>
-            <GalleryGrid images={facility.gallery} />
+            <GalleryGrid media={facility.media} />
           </div>
         </section>
       )}
