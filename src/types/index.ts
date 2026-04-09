@@ -18,11 +18,13 @@ export interface Member {
 
 export type FacilityType = "simple" | "accommodation" | "event";
 
+export type GalleryItem = string | { url: string; type: "image" | "video" };
+
 export interface Room {
   name: string;
   description: string;
   price: string;
-  images?: string[];
+  images?: GalleryItem[];
   inclusions?: string;
   bookingPolicy?: string;
   checkIn?: string;
@@ -40,7 +42,7 @@ export interface Facility {
   description: string;
   image: string;
   type: FacilityType;
-  gallery?: string[];
+  gallery?: GalleryItem[];
   createdAt?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
   // Accommodation specific

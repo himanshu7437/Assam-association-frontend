@@ -70,7 +70,15 @@ export default function FacilityDetailsPage({ params }: { params: Promise<{ id: 
                 Overview
                 <div className="absolute -bottom-3 left-0 w-12 h-1 bg-secondary rounded-full" />
               </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed whitespace-pre-wrap pt-4">
+              <p 
+                className="text-muted-foreground text-lg leading-relaxed pt-4"
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden"
+                }}
+              >
                 {facility.description}
               </p>
             </div>

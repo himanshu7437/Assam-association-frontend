@@ -5,8 +5,10 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { GalleryItem } from "@/types";
+
 interface ImageCarouselProps {
-  images?: string[];
+  images?: GalleryItem[];
 }
 
 export default function ImageCarousel({ images }: ImageCarouselProps) {
@@ -20,6 +22,10 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
       </div>
     );
   }
+
+  const normalizedGallery = images.map((item) =>
+    typeof item === "string" ? { url: item, type: "image" as const } : item
+  );
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -45,13 +51,15 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
 
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
-    setCurrentIndex((prev) => (prev + newDirection + images.length) % images.length);
+    setCurrentIndex((prev) => (prev + newDirection + normalizedGallery.length) % normalizedGallery.length);
   };
+
+  const currentItem = normalizedGallery[currentIndex];
 
   return (
     <div className="relative w-full h-full flex flex-col gap-4">
       {/* MAIN CAROUSEL IMAGE AREA */}
-      <div className="relative flex-grow overflow-hidden rounded-2xl shadow-lg bg-muted/10 group h-full">
+      <div className="relative flex-grow overflow-hidden rounded-2xl shadow-lg bg-black group h-full">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -75,21 +83,31 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
                 paginate(-1);
               }
             }}
-            className="absolute inset-0 cursor-grab active:cursor-grabbing"
+             className="absolute inset-0 cursor-grab active:cursor-grabbing flex items-center justify-center"
           >
-            <Image
-              src={images[currentIndex]}
-              alt={`Room image ${currentIndex + 1}`}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover select-none"
-              priority={currentIndex === 0}
-            />
+            {currentItem.type === "video" ? (
+              <video
+                src={currentItem.url}
+                controls
+                controlsList="nodownload"
+                className="w-full h-full object-cover"
+                onPointerDown={(e) => e.stopPropagation()} // Prevent drag conflict with video controls
+              />
+            ) : (
+               <Image
+                src={currentItem.url}
+                alt={`Room media ${currentIndex + 1}`}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover select-none pointer-events-none"
+                priority={currentIndex === 0}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 
         {/* NAVIGATION CONTROLS */}
-        {images.length > 1 && (
+        {normalizedGallery.length > 1 && (
           <>
             {/* LEFT BUTTON */}
             <button
@@ -98,7 +116,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
                 paginate(-1);
               }}
               className="absolute top-1/2 left-3 md:left-5 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 scale-90 group-hover:scale-100"
-              aria-label="Previous image"
+              aria-label="Previous media"
             >
               <ChevronLeft size={22} />
             </button>
@@ -110,7 +128,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
                 paginate(1);
               }}
               className="absolute top-1/2 right-3 md:right-5 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white opacity-0 group-hover:opacity-100 transition-all hover:bg-black/60 scale-90 group-hover:scale-100"
-              aria-label="Next image"
+              aria-label="Next media"
             >
               <ChevronRight size={22} />
             </button>
@@ -118,10 +136,10 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
         )}
       </div>
 
-      {/* DOT INDICATORS (Below image for GalleryGrid consistency) */}
-      {images.length > 1 && (
+      {/* DOT INDICATORS */}
+      {normalizedGallery.length > 1 && (
         <div className="flex justify-center gap-2.5 pb-2">
-          {images.map((_, i) => (
+          {normalizedGallery.map((_, i) => (
             <button
               key={i}
               onClick={() => {
@@ -133,7 +151,7 @@ export default function ImageCarousel({ images }: ImageCarouselProps) {
                   ? "bg-primary scale-125 shadow-sm"
                   : "bg-outline-variant hover:bg-primary/50"
               }`}
-              aria-label={`Go to image ${i + 1}`}
+              aria-label={`Go to media ${i + 1}`}
             />
           ))}
         </div>
