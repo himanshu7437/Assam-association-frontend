@@ -23,9 +23,13 @@ export default function ImageCarousel({ media }: ImageCarouselProps) {
     );
   }
 
-  const normalizedGallery = media.map((item) =>
-    typeof item === "string" ? { url: item, type: "image" as const } : item
-  );
+  const normalizedGallery = media.map((item) => {
+    if (typeof item === "string") {
+      const isVideo = item.match(/\.(mp4|webm|ogg)$/i) !== null;
+      return { url: item, type: isVideo ? ("video" as const) : ("image" as const) };
+    }
+    return item;
+  });
 
   const slideVariants = {
     enter: (direction: number) => ({

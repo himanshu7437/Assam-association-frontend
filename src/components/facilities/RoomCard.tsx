@@ -13,7 +13,7 @@ export default function RoomCard({ room }: RoomCardProps) {
         
         {/* ROOM IMAGES CAROUSEL - Larger area for "Complete Image" */}
         <div className="lg:w-[55%] relative h-[300px] sm:h-[400px] lg:h-[500px] p-4 sm:p-6 lg:p-8 bg-muted/5">
-          <ImageCarousel media={room.media} />
+          <ImageCarousel media={room.images || room.media} />
         </div>
 
         {/* ROOM DETAILS - Paragraph Style */}

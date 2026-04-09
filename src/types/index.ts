@@ -23,8 +23,9 @@ export type GalleryItem = string | { url: string; type: "image" | "video" };
 export interface Room {
   name: string;
   description: string;
-  price: string;
+  price: string | number;
   media?: GalleryItem[];
+  images?: GalleryItem[] | string[];
   inclusions?: string;
   bookingPolicy?: string;
   checkIn?: string;
