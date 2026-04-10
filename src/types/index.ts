@@ -10,7 +10,7 @@ export interface Notice {
 
 export interface Member {
   id: string;
-  name: string;
+  fullName: string;
   role: string;
   image: string;
   email?: string;

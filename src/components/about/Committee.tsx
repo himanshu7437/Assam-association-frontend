@@ -72,7 +72,7 @@ export default function Committee() {
                 <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mx-auto mb-6">
                   <Image
                     src={member.image || "/images/placeholder-user.jpg"}
-                    alt={member.name}
+                    alt={member.fullName}
                     fill
                     sizes="(max-width: 768px) 100px, 128px"
                     className="object-cover rounded-2xl border-4 border-[#eae8e3] group-hover:border-[#4b0004]/20 transition-colors"
@@ -81,7 +81,7 @@ export default function Committee() {
 
                 {/* Info */}
                 <h3 className="text-lg sm:text-xl font-bold text-[#1b1c19] mb-1 font-[Noto_Serif]">
-                  {member.name}
+                  {member.fullName}
                 </h3>
 
                 <p className="text-[#4b0004] text-sm font-medium mb-1">
