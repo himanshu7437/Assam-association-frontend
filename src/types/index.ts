@@ -81,6 +81,15 @@ export interface DocumentItem {
   url?: string;
 }
 
+export interface PublicationItem {
+  id: string;
+  name: string;
+  category: "samayik" | "magazine" | "other";
+  year?: string;
+  fileUrl: string;
+  createdAt?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
 export type BookingStatus = "pending" | "approved" | "rejected";
 
 export interface BookingInput {
